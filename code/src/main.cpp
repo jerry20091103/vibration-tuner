@@ -9,7 +9,6 @@ void toggleLed() {
 
 void updateButtons() {
 	btnEnc.loop();
-	btn0.loop();
 }
 
 void setup() {
@@ -26,7 +25,7 @@ void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);
 	taskManager.scheduleFixedRate(1000, toggleLed);
 	
-	taskManager.scheduleFixedRate(2, updateButtons);
+	taskManager.scheduleFixedRate(1, updateButtons);
 	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
 }
 

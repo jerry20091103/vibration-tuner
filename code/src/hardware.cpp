@@ -4,7 +4,6 @@
 HardwareRotaryEncoder *enc0;
 
 Button2 btnEnc;
-Button2 btn0;
 
 void hardwareSetup() {
     // setup rotary encoder
@@ -18,10 +17,4 @@ void hardwareSetup() {
     btnEnc.setClickHandler(BtnPressCallback);
     btnEnc.setLongClickHandler(BtnHoldCallback);
     btnEnc.setDoubleClickHandler(BtnDoubleClickCallback);
-
-    // setup second button
-    btn0.begin(SEC_BTN);
-    btn0.setClickHandler(BtnPressCallback);
-    btn0.setLongClickHandler(BtnHoldCallback);
-    btn0.setDoubleClickHandler(BtnDoubleClickCallback);
 }
