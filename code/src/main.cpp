@@ -15,8 +15,13 @@ void updateButtons() {
 void setup() {
 	// put your setup code here, to run once:
 	Serial.begin(9600);
-	hardwareSetup();
+	while (!Serial)
+	{
+		/* code */
+	}
+	Serial.println("Hello, World!");
 	PageManager.init();
+	hardwareSetup();
 	// blink led
 	pinMode(LED_BUILTIN, OUTPUT);
 	taskManager.scheduleFixedRate(1000, toggleLed);
