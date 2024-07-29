@@ -9,10 +9,10 @@ void TunerPage::onBtnPressed(uint8_t pin)
 void TunerPage::onBtnHold(uint8_t pin)
 {
     Serial.println("TunerPage: onBtnHold");
-    if (pin == ENC_BTN)
-    {
-        PageManager.switchPage(PAGE_PROMPTER);
-    }
+    // if (pin == ENC_BTN)
+    // {
+    //     PageManager.switchPage(PAGE_PROMPTER);
+    // }
 }
 
 void TunerPage::onBtnDoubleClicked(uint8_t pin)

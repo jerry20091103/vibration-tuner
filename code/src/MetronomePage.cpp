@@ -9,10 +9,10 @@ void MetronomePage::onBtnPressed(uint8_t pin)
 void MetronomePage::onBtnHold(uint8_t pin)
 {
     Serial.println("MetronomePage: onBtnHold");
-    if (pin == ENC_BTN)
-    {
-        PageManager.switchPage(PAGE_TUNER);
-    }
+    // if (pin == ENC_BTN)
+    // {
+    //     PageManager.switchPage(PAGE_TUNER);
+    // }
 }
 
 void MetronomePage::onBtnDoubleClicked(uint8_t pin)

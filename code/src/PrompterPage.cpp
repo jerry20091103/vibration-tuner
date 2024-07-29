@@ -9,10 +9,10 @@ void PrompterPage::onBtnPressed(uint8_t pin)
 void PrompterPage::onBtnHold(uint8_t pin)
 {
     Serial.println("PrompterPage: onBtnHold");
-    if (pin == ENC_BTN)
-    {
-        PageManager.switchPage(PAGE_METRONOME);
-    }
+    // if (pin == ENC_BTN)
+    // {
+    //     PageManager.switchPage(PAGE_METRONOME);
+    // }
 }
 
 void PrompterPage::onBtnDoubleClicked(uint8_t pin)

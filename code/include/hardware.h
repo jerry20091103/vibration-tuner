@@ -7,21 +7,22 @@
 
 //* Pins
 // encoder pins
-#define ENC_A D2
-#define ENC_B D1
-#define ENC_BTN D3
+// #define ENC_A D2
+// #define ENC_B D1
+// #define ENC_BTN D3
 
-// haptic driver pins
-#define DRV_SDA D4
-#define DRV_SCL D5
+// // haptic driver pins
+// #define DRV_SDA D4
+// #define DRV_SCL D5
 
-// display pins
-#define DISP_MOSI D10
-#define DISP_CS D7
-#define DISP_SCK D8
+// // display pins
+// #define DISP_MOSI D10
+// #define DISP_CS D7
+// #define DISP_SCK D8
 
-#define BUZZER_PIN D6
-#define PIEZO_PIN A0
+
+// #define BUZZER_PIN D6
+// #define PIEZO_PIN A0
 // #define SEC_BTN D6
 
 // rotary encoder object
