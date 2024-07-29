@@ -29,21 +29,21 @@ void setup() {
 	}
 	delay(1000); // delay here to wait for serial monitor to connect
 	Serial.println("Hello, World!");
-	digitalWrite(LED_BUILTIN, HIGH);
-	Serial.println("LED on");
+	// digitalWrite(LED_BUILTIN, HIGH);
+	// Serial.println("LED on");
 	// tft.init();
 	// PageManager.init();
 	// hardwareSetup();
 	// // blink led
 	// pinMode(LED_BUILTIN, OUTPUT);
-	// taskManager.scheduleFixedRate(1000, toggleLed);
+	taskManager.scheduleFixedRate(1000, toggleLed);
 	
-	taskManager.scheduleFixedRate(1, updateButtons);
-	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
-	taskManager.scheduleFixedRate(1000, testVirbration);
+	// taskManager.scheduleFixedRate(1, updateButtons);
+	// taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
+	// taskManager.scheduleFixedRate(1000, testVirbration);
 }
 
 void loop() {
 	// put your main code here, to run repeatedly:
-	// taskManager.runLoop();
+	taskManager.runLoop();
 }
