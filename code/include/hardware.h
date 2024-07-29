@@ -2,8 +2,11 @@
 #define HARDWARE_H
 
 #include <Arduino.h>
+#include <SPI.h>
+#include <Wire.h>
 #include <IoAbstraction.h>
 #include <Button2.h>
+#include <Adafruit_DRV2605.h>
 
 //* Pins
 // encoder pins
@@ -30,6 +33,9 @@ extern HardwareRotaryEncoder *enc0;
 // button object for button2 library
 extern Button2 btnEnc;
 extern Button2 btn0;
+
+// haptic driver object
+extern Adafruit_DRV2605 haptic;
 
 void hardwareSetup();
 
