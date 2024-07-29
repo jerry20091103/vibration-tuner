@@ -27,13 +27,13 @@ void hardwareSetup() {
         Serial.println("Failed to start I2C bus");
     }
 
-    if (!haptic.begin()) {
-        Serial.println("Failed to start haptic driver");
-    }
-    haptic.selectLibrary(6);
-    haptic.setMode(DRV2605_MODE_INTTRIG);
-    haptic.useLRA();
-    // test first waveform
-    haptic.setWaveform(0, 24);
-    haptic.setWaveform(1, 0);
+    // if (!haptic.begin()) {
+    //     Serial.println("Failed to start haptic driver");
+    // }
+    // haptic.selectLibrary(6);
+    // haptic.setMode(DRV2605_MODE_INTTRIG);
+    // haptic.useLRA();
+    // // test first waveform
+    // haptic.setWaveform(0, 24);
+    // haptic.setWaveform(1, 0);
 }
