@@ -26,15 +26,18 @@ void setup() {
 	}
 	delay(1000); // delay here to wait for serial monitor to connect
 	Serial.println("Hello, World!");
-	PageManager.init();
 	hardwareSetup();
 	// blink led
 	pinMode(LED_BUILTIN, OUTPUT);
 	taskManager.scheduleFixedRate(1000, toggleLed);
 	
 	taskManager.scheduleFixedRate(1, updateButtons);
+	taskManager.scheduleFixedRate(5, updateGui);
 	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
 	taskManager.scheduleFixedRate(1000, testVirbration);
+
+	// play 440 hz with buzzer
+	tone(BUZZER_PIN, 440);
 }
 
 void loop() {
