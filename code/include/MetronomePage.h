@@ -2,7 +2,7 @@
 #define METRONOME_PAGE_H
 
 #include "pages.h"
-
+#include "Metronome.h"
 class MetronomePage : public Pages
 {
 public:

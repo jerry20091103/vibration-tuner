@@ -1,9 +1,11 @@
 #include "MetronomePage.h"
 #include "hardware.h"
+#include "Metronome.h"
 
 void MetronomePage::onBtnPressed(uint8_t pin)
 {
     Serial.println("MetronomePage: onBtnPressed");
+    metronome.toggleVibrating();
 }
 
 void MetronomePage::onBtnHold(uint8_t pin)
@@ -23,11 +25,13 @@ void MetronomePage::onBtnDoubleClicked(uint8_t pin)
 void MetronomePage::onEncTurned(int value)
 {
     Serial.println("MetronomePage: onEncTurned");
+    metronome.updateBPM(value);
 }
 
 void MetronomePage::update()
 {
 }
+
 
 void MetronomePage::init()
 {
@@ -43,3 +47,5 @@ void MetronomePage::unload()
 {
     Serial.println("MetronomePage: unload");
 }
+
+
