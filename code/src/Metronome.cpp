@@ -42,6 +42,9 @@ bool Metronome::updateBPM(int value)
     if (BPM + value <= MAX_BPM && BPM + value >= MIN_BPM)
     {
         BPM += value;
+        taskManager.cancelTask(vibrationTaskID);
+        int period = 60000000 / BPM;
+        vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
         Serial.println("Current BPM:" + String(BPM));
         return true;
     }
