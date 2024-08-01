@@ -24,7 +24,10 @@ void Metronome::toggleVibrating()
         currentBeat = 0;
         isVibrating = true;
         uint8_t period = 60000000 / BPM;
+        haptic.setWaveform(0, strongHapticWaveform);
+        this->currentBeat = 0;
         haptic.go();
+        this->currentBeat++;
         Serial.println("Vibrating");
         vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
     }
@@ -38,7 +41,10 @@ bool Metronome::startVibrating()
         Serial.println("Start Vibrating");
         isVibrating = true;
         uint8_t period = 60000000 / BPM;
+        haptic.setWaveform(0, strongHapticWaveform);
+        this->currentBeat = 0;
         haptic.go();
+        this->currentBeat++;
         Serial.println("Vibrating");
         vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
         return true;
