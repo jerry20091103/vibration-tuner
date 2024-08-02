@@ -24,7 +24,7 @@ void MetronomePage::onBtnDoubleClicked(uint8_t pin)
 
 void MetronomePage::onEncTurned(int value)
 {
-    currentBPM += value;
+    currentBPM = value + 30;
     if (currentBPM > MAX_BPM)
     {
         currentBPM = MAX_BPM;
@@ -70,12 +70,13 @@ void MetronomePage::init()
     labelBeat = lv_label_create(screen);
     lv_label_set_text_fmt(labelBeat, "Beat: %d/%d", metronome.getCurrentBeat(), beatCount);
     lv_obj_set_style_text_font(labelBeat, &lv_font_montserrat_26, 0);
-    lv_obj_align(labelBeat, LV_ALIGN_BOTTOM_MID, 0, 0);
+    lv_obj_align(labelBeat, LV_ALIGN_BOTTOM_MID, 0, -30);
 }
 
 void MetronomePage::load()
 {
     Serial.println("MetronomePage: load");
+    enc0->changePrecision(270, currentBPM-30);
 }
 
 void MetronomePage::unload()
