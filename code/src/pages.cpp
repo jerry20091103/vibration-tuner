@@ -52,7 +52,7 @@ void PageManager_::switchPage(PageID pageID)
         if (PageArr[curPageID] != nullptr)
         {
             PageArr[curPageID]->load();
-            lv_screen_load(PageArr[curPageID]->screen);
+            lv_screen_load_anim(PageArr[curPageID]->screen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, false);
         }
     }
 }
