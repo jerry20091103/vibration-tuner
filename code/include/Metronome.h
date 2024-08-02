@@ -9,29 +9,29 @@ public:
     Metronome();
     void toggleVibrating();
     bool getVibrating();
-    uint8_t getBPM();
-    bool updateBPM(uint8_t value);
-    void setBPM(uint8_t BPM);
+    int getBPM();
+    bool updateBPM(int value);
+    void setBPM(int BPM);
     bool startVibrating();
     bool stopVibrating();
-    void setBeatCount(uint8_t beatCount);
-    uint8_t getBeatCount();
-    uint8_t getCurrentBeat();
-    void setStrongHapticWaveform(uint8_t waveform);
-    void setWeakHapticWaveform(uint8_t waveform);
-    void setBuzzerLevel(uint8_t level);
+    void setBeatCount(int beatCount);
+    int getBeatCount();
+    int getCurrentBeat();
+    void setStrongHapticWaveform(int waveform);
+    void setWeakHapticWaveform(int waveform);
+    void setBuzzerLevel(int level);
 private:
-    const uint8_t MAX_BPM = 600;
-    const uint8_t MIN_BPM = 1;
-    uint8_t BPM;
+    const int MAX_BPM = 600;
+    const int MIN_BPM = 1;
+    int BPM;
     bool isVibrating;
     uint8_t vibrationTaskID;
-    uint8_t beatCount;
-    uint8_t currentBeat;
-    uint8_t buzzerLevel;
-    uint8_t strongHapticWaveform;
-    uint8_t weakHapticWaveform;
-    
+    int beatCount;
+    int currentBeat;
+    int buzzerLevel;
+    int strongHapticWaveform;
+    int weakHapticWaveform;
+
     static void vibrationCallback();
 };
 extern Metronome metronome;

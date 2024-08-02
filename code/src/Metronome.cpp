@@ -23,7 +23,7 @@ void Metronome::toggleVibrating()
     {
         currentBeat = 0;
         isVibrating = true;
-        uint8_t period = 60000000 / BPM;
+        int period = 60000000 / BPM;
         haptic.setWaveform(0, strongHapticWaveform);
         this->currentBeat = 0;
         haptic.go();
@@ -40,7 +40,7 @@ bool Metronome::startVibrating()
         currentBeat = 0;
         Serial.println("Start Vibrating");
         isVibrating = true;
-        uint8_t period = 60000000 / BPM;
+        int period = 60000000 / BPM;
         haptic.setWaveform(0, strongHapticWaveform);
         this->currentBeat = 0;
         haptic.go();
@@ -66,7 +66,7 @@ bool Metronome::stopVibrating()
     return false;
 }
 
-void Metronome::setBPM(uint8_t BPM)
+void Metronome::setBPM(int BPM)
 {
     if (BPM <= MAX_BPM && BPM >= MIN_BPM)
     {
@@ -83,13 +83,13 @@ void Metronome::setBPM(uint8_t BPM)
     if (isVibrating)
     {
         taskManager.cancelTask(vibrationTaskID);
-        uint8_t period = 60000000 / BPM;
+        int period = 60000000 / BPM;
         vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
     }
     Serial.println("Current BPM:" + String(BPM));
 }
 
-void Metronome::setBeatCount(uint8_t beatCount)
+void Metronome::setBeatCount(int beatCount)
 {
     this->beatCount = beatCount;
 }
@@ -99,18 +99,18 @@ bool Metronome::getVibrating()
     return isVibrating;
 }
 
-uint8_t Metronome::getBPM()
+int Metronome::getBPM()
 {
     return BPM;
 }
 
-bool Metronome::updateBPM(uint8_t value)
+bool Metronome::updateBPM(int value)
 {
     if (BPM + value <= MAX_BPM && BPM + value >= MIN_BPM)
     {
         BPM += value;
         taskManager.cancelTask(vibrationTaskID);
-        uint8_t period = 60000000 / BPM;
+        int period = 60000000 / BPM;
         vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
         Serial.println("Current BPM:" + String(BPM));
         return true;
@@ -136,22 +136,22 @@ void Metronome::vibrationCallback()
     Serial.println("Vibrating");
 }
 
-uint8_t Metronome::getBeatCount()
+int Metronome::getBeatCount()
 {
     return beatCount;
 }
 
-uint8_t Metronome::getCurrentBeat()
+int Metronome::getCurrentBeat()
 {
     return currentBeat;
 }
 
-void Metronome::setStrongHapticWaveform(uint8_t waveform)
+void Metronome::setStrongHapticWaveform(int waveform)
 {
     strongHapticWaveform = waveform;
 }
 
-void Metronome::setWeakHapticWaveform(uint8_t waveform)
+void Metronome::setWeakHapticWaveform(int waveform)
 {
     weakHapticWaveform = waveform;
 }
