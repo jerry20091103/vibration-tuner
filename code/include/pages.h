@@ -2,6 +2,7 @@
 #define PAGE_H
 
 #include <Arduino.h>
+#include <lvgl.h>
 
 enum PageID {
     PAGE_TUNER,
@@ -33,7 +34,8 @@ public:
     // This is called when the page is switched away from
     virtual void unload() = 0;
 
-    uint8_t pageID;
+    uint8_t pageID; 
+    lv_obj_t *screen;
 };
 
 // *PageManager class

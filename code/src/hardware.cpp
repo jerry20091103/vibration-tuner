@@ -50,11 +50,6 @@ void hardwareSetup() {
     /*TFT_eSPI can be enabled lv_conf.h to initialize the display in a simple way*/
     disp = lv_tft_espi_create(TFT_HOR_RES, TFT_VER_RES, draw_buf, sizeof(draw_buf));
     lv_display_set_rotation(disp, TFT_ROTATION);
-    
-    // show hello world
-    lv_obj_t *label = lv_label_create( lv_screen_active() );
-    lv_label_set_text( label, "Hello Arduino, I'm LVGL!" );
-    lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
 
     // setup Pages
     PageManager.init();

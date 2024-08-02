@@ -3,6 +3,10 @@
 
 #include "pages.h"
 #include "Metronome.h"
+
+# define MAX_BPM 300
+# define MIN_BPM 30
+
 class MetronomePage : public Pages
 {
 public:
@@ -15,7 +19,12 @@ public:
     void load();
     void unload();
 private:
-    // add your variables here
+    // data
+    int currentBPM = 60;
+    int beatCount = 4;
+    // lvgl object ref
+    lv_obj_t *labelBPM;
+    lv_obj_t *labelBeat;
 };
 
 #endif // METRONOME_PAGE_H

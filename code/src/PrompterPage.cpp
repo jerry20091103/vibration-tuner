@@ -32,6 +32,15 @@ void PrompterPage::update()
 void PrompterPage::init()
 {
     Serial.println("PrompterPage: init");
+    pageID = PAGE_PROMPTER;
+    // create screen
+    screen = lv_obj_create(NULL);
+    lv_obj_set_style_bg_color(screen, lv_color_black(), 0);
+    // title
+    lv_obj_t *label = lv_label_create(screen);
+    lv_label_set_text(label, "Prompter");
+    lv_obj_set_style_text_font(label, &lv_font_montserrat_26, 0);
+    lv_obj_align(label, LV_ALIGN_TOP_MID, 0, 0);
 }
 
 void PrompterPage::load()

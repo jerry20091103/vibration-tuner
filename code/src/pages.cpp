@@ -36,6 +36,7 @@ void PageManager_::init()
     if (PageArr[curPageID] != nullptr)
     {
         PageArr[curPageID]->load();
+        lv_screen_load(PageArr[curPageID]->screen);
     }
 }
 
@@ -51,6 +52,7 @@ void PageManager_::switchPage(PageID pageID)
         if (PageArr[curPageID] != nullptr)
         {
             PageArr[curPageID]->load();
+            lv_screen_load(PageArr[curPageID]->screen);
         }
     }
 }

@@ -21,7 +21,11 @@
 #define DRV_SDA D4
 #define DRV_SCL D5
 
-#define BUZZER_PIN D2
+#define BUZZER_PIN D9
+
+// haptic waveform
+#define HAPTIC_WAVEFORM_CLICK 1
+#define HAPTIC_WAVEFORM_TICK 24
 
 // rotary encoder object
 extern HardwareRotaryEncoder *enc0;
