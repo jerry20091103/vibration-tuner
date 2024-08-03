@@ -2,6 +2,7 @@
 #include "TunerPage.h"
 #include "MetronomePage.h"
 #include "PrompterPage.h"
+#include "MetronomeOptionsPage.h"
 
 PageManager_ &PageManager_::getInstance()
 {
@@ -20,6 +21,7 @@ void PageManager_::init()
     PageArr[PAGE_TUNER] = new TunerPage();
     PageArr[PAGE_METRONOME] = new MetronomePage();
     PageArr[PAGE_PROMPTER] = new PrompterPage();
+    PageArr[PAGE_METRONOME_OPTIONS] = new MetronomeOptionsPage();
 
     // initialize all pages
     for (uint8_t i = 0; i < MAX_PAGE; i++)
@@ -40,7 +42,7 @@ void PageManager_::init()
     }
 }
 
-void PageManager_::switchPage(PageID pageID)
+void PageManager_::switchPage(PageID pageID, bool useAnim)
 {
     if (pageID < MAX_PAGE)
     {
@@ -52,7 +54,10 @@ void PageManager_::switchPage(PageID pageID)
         if (PageArr[curPageID] != nullptr)
         {
             PageArr[curPageID]->load();
-            lv_screen_load_anim(PageArr[curPageID]->screen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, false);
+            if (useAnim)
+                lv_screen_load_anim(PageArr[curPageID]->screen, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, false);
+            else
+                lv_screen_load(PageArr[curPageID]->screen);
         }
     }
 }

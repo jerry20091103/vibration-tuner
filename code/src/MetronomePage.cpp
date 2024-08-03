@@ -13,13 +13,17 @@ void MetronomePage::onBtnHold(uint8_t pin)
     Serial.println("MetronomePage: onBtnHold");
     if (pin == ENC_BTN)
     {
-        PageManager.switchPage(PAGE_TUNER);
+        PageManager.switchPage(PAGE_TUNER, true);
     }
 }
 
 void MetronomePage::onBtnDoubleClicked(uint8_t pin)
 {
     Serial.println("MetronomePage: onBtnDoubleClicked");
+    if (pin == ENC_BTN)
+    {
+        PageManager.switchPage(PAGE_METRONOME_OPTIONS);
+    }
 }
 
 void MetronomePage::onEncTurned(int value)
@@ -40,7 +44,7 @@ void MetronomePage::onEncTurned(int value)
 void MetronomePage::update()
 {
     // update beat count
-    lv_label_set_text_fmt(labelBeat, "Beat: %d/%d", metronome.getCurrentBeat(), beatCount);
+    lv_label_set_text_fmt(labelBeat, "Beat: %d/%d", metronome.getCurrentBeat(), metronome.getBeatCount());
 }
 
 
@@ -50,7 +54,6 @@ void MetronomePage::init()
     pageID = PAGE_METRONOME;
     // init metronome
     metronome.setBPM(currentBPM);
-    metronome.setBeatCount(beatCount);
     metronome.setStrongHapticWaveform(HAPTIC_WAVEFORM_CLICK);
     metronome.setWeakHapticWaveform(HAPTIC_WAVEFORM_TICK);
     // create screen
@@ -68,7 +71,7 @@ void MetronomePage::init()
     lv_obj_align(labelBPM, LV_ALIGN_CENTER, 0, 0);
     // beat label
     labelBeat = lv_label_create(screen);
-    lv_label_set_text_fmt(labelBeat, "Beat: %d/%d", metronome.getCurrentBeat(), beatCount);
+    lv_label_set_text_fmt(labelBeat, "Beat: %d/%d", metronome.getCurrentBeat(), metronome.getBeatCount());
     lv_obj_set_style_text_font(labelBeat, &lv_font_montserrat_26, 0);
     lv_obj_align(labelBeat, LV_ALIGN_BOTTOM_MID, 0, -30);
 }

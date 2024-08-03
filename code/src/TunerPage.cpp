@@ -11,7 +11,7 @@ void TunerPage::onBtnHold(uint8_t pin)
     Serial.println("TunerPage: onBtnHold");
     if (pin == ENC_BTN)
     {
-        PageManager.switchPage(PAGE_PROMPTER);
+        PageManager.switchPage(PAGE_PROMPTER, true);
     }
 }
 

@@ -21,7 +21,6 @@ public:
 private:
     // data
     int currentBPM = 60;
-    int beatCount = 4;
     // lvgl object ref
     lv_obj_t *labelBPM;
     lv_obj_t *labelBeat;

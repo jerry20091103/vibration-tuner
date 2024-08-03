@@ -11,7 +11,7 @@ void PrompterPage::onBtnHold(uint8_t pin)
     Serial.println("PrompterPage: onBtnHold");
     if (pin == ENC_BTN)
     {
-        PageManager.switchPage(PAGE_METRONOME);
+        PageManager.switchPage(PAGE_METRONOME, true);
     }
 }
 

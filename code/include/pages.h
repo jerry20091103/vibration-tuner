@@ -8,6 +8,7 @@ enum PageID {
     PAGE_TUNER,
     PAGE_METRONOME,
     PAGE_PROMPTER,
+    PAGE_METRONOME_OPTIONS,
     MAX_PAGE
 };
 
@@ -52,7 +53,7 @@ public:
     // Initialize all pages at program start
     void init();
     // Switch to a page
-    void switchPage(PageID pageID);
+    void switchPage(PageID pageID, bool useAnim = false);
     
 private:
     // Private constructor to prevent instantiation
