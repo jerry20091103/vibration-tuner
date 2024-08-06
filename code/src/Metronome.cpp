@@ -143,7 +143,7 @@ int Metronome::getBeatCount()
 
 int Metronome::getCurrentBeat()
 {
-    return currentBeat;
+    return max(0, currentBeat - 1);
 }
 
 void Metronome::setStrongHapticWaveform(int waveform)
