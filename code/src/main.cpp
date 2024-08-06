@@ -8,6 +8,7 @@ int buzzer_min = 4095;
 void toggleLed() {
 	static bool ledState = false;
 	digitalWrite(LED_BUILTIN, ledState);
+	digitalWrite(D2, ledState);
 	ledState = !ledState;
 }
 
@@ -48,9 +49,10 @@ void setup() {
 
 	// play 440 hz with buzzer
 	// tone(BUZZER_PIN, 440);
+	pinMode(BUZZER_PIN, OUTPUT);
 	// set buzzer pin as input
-	pinMode(BUZZER_PIN, INPUT);
-	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
+	// pinMode(BUZZER_PIN, INPUT);
+	// analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
 }
 
 void loop() {

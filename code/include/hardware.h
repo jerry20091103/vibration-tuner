@@ -21,7 +21,7 @@
 #define DRV_SDA D4
 #define DRV_SCL D5
 
-#define BUZZER_PIN D9
+#define BUZZER_PIN D2
 
 // haptic waveform
 #define HAPTIC_WAVEFORM_CLICK 1

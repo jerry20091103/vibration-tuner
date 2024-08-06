@@ -155,3 +155,8 @@ void Metronome::setWeakHapticWaveform(int waveform)
 {
     weakHapticWaveform = waveform;
 }
+
+void Metronome::setBuzzerLevel(int level)
+{
+    
+}
