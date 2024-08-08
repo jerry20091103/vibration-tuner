@@ -8,6 +8,7 @@ int buzzer_min = 4095;
 void toggleLed() {
 	static bool ledState = false;
 	digitalWrite(LED_BUILTIN, ledState);
+	analogWrite(BUZZER_PIN, ledState ? 0 : 200);
 	ledState = !ledState;
 }
 
@@ -57,13 +58,13 @@ void loop() {
 	// put your main code here, to run repeatedly:
 	taskManager.runLoop();
 	// read buzzer pin
-	int buzzer_val = analogRead(BUZZER_PIN);
-	if (buzzer_val > buzzer_max)
-	{
-		buzzer_max = buzzer_val;
-	}
-	if (buzzer_val < buzzer_min)
-	{
-		buzzer_min = buzzer_val;
-	}
+	// int buzzer_val = analogRead(BUZZER_PIN);
+	// if (buzzer_val > buzzer_max)
+	// {
+	// 	buzzer_max = buzzer_val;
+	// }
+	// if (buzzer_val < buzzer_min)
+	// {
+	// 	buzzer_min = buzzer_val;
+	// }
 }
