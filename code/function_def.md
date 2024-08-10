@@ -1,7 +1,7 @@
 # Function Description for vibration-tuner
 - all datatypes/names are for reference only, can be changed as needed
-## Metronomone
-The metronomone allows the user to set a tempo and have the device vibrate at that tempo.
+## Metronome
+The metronome allows the user to set a tempo and have the device vibrate at that tempo.
 ### Functions
 - setBPM(int bpm): 
     - Sets the tempo of the device to the given BPM. Range: at least 30-300 BPM.
@@ -57,3 +57,69 @@ The tuner use the piezo input to detect the frequency of the sound and display i
     - Sets the reference frequency for the tuner in Hz
     - Default: 440H. The means the note A4 is defined as 440Hz.
     - range: 400-480Hz
+
+## Prompter
+The prompter is a text display for the user to see the current chord to play. It need to sync with the metronome.
+### Chords
+- The chord can be represented as ascii string. About 5~7 characters should be enough.
+- We plan to display the current, next, and next next chord. (3~4 chords)
+- Here is a guitar chord finder website: https://www.oolimo.com/en/guitar-chords/find. There are some common chords used for reference.
+- Here are some examples: "C", "G", "Am", "F", "Dm", "E7", "G7", "Cmaj7", "Dm7", "Fm7", "C/E", "G/B", "D/F#", "Cdim7" ...
+### Timeline
+- The chords are stored with time information. We use can use BPM as time unit to better sync with the metronome? (or Bar count can be used?)
+- For now we provide 1 "slot" per beat to write chords. This means the minimum time duration is 1 beat per chord. The duration can be any multiple of 1 beat.
+- For example, here is a random timeline with 4 beats per measure: ("|" denotes a metronome beat)
+```
+|C  |A   |    |F   |G   |
+C starts at beat 0 (bar 0),     ends at beat 1 (bar 0.25)
+A starts at beat 1 (bar 0.25),  ends at beat 3 (bar 0.75)
+F starts at beat 3 (bar 0.75),  ends at beat 4 (bar 1)
+G starts at beat 4 (bar 1),     ends at beat 5 (bar 1.25)
+```
+### Music Score
+- The music score shoud contain the following info: (can add more if needed)
+    - BPM: Beats per minute.
+    - Beats per measure: The number of beats in a measure.
+    - Chords: A list of chords to play and their time information.
+    - name? 
+- 
+### Functions
+- start():
+    - Starts the prompter.
+    - The prompter will start displaying the chords.
+    - The metronome should also be started at the same time.
+- stop():
+    - Stops the prompter.
+    - The prompter will stop displaying the chords.
+    - The metronome should also be stopped at the same time.
+    - The prompter should be able to resume from the last position. when called start() again.
+- setCurrentBar(int bar):
+    - Sets the current bar number.
+    - one Bar means one measure.
+    - The "beats per measure" info need to be provided by the music score.
+    - This allows the user to scroll to a specific part of a song with encoder turn.
+- getCurrentBar():
+    - Returns the current bar number.
+- setMusicScore(MusicScore score):
+    - Sets the music score for the prompter.
+    - The music score contains all the info needed for the prompter.
+    - The prompter will display the chords according to the music score.
+    - This may be a json string or a struct.
+    - or maybe score loading shoud be done in the backend instead of frontend?
+- setSpeed(float speed):
+    - Sets the speed of the prompter.
+    - The speed is a multiplier of the BPM.
+    - For example, if the BPM is 120 and the speed is 0.5, the prompter and metronome will operate at 60 BPM.
+    - The speed can be changed during the prompter is running.
+    - range is 0.5-2.0.
+- getCurrentChord():
+    - Returns the current chord to play.
+    - The prompter will display the current chord on the screen.
+- getNextChord():
+    - Returns the next chord to play.
+    - The prompter will display the next chord on the screen.
+- getNextNextChord():
+    - Returns the next next chord to play.
+    - The prompter will display the next next chord on the screen.
+
+  
