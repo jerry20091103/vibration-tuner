@@ -22,8 +22,10 @@ private:
     // data
     int currentBPM = 60;
     // lvgl object ref
-    lv_obj_t *labelBPM;
-    lv_obj_t *labelBeat;
+    lv_obj_t *beatLED[16];
+    lv_obj_t *bpmArc;
+    // variables
+    int lastBeatCount = 0;
 };
 
 #endif // METRONOME_PAGE_H

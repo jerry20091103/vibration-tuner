@@ -32,14 +32,6 @@ void PageManager_::init()
         }
         Serial.println("page init: " + String(i));
     }
-
-    // load the first page
-    curPageID = PAGE_TUNER;
-    if (PageArr[curPageID] != nullptr)
-    {
-        PageArr[curPageID]->load();
-        lv_screen_load(PageArr[curPageID]->screen);
-    }
 }
 
 void PageManager_::switchPage(PageID pageID, bool useAnim)
@@ -59,6 +51,32 @@ void PageManager_::switchPage(PageID pageID, bool useAnim)
             else
                 lv_screen_load(PageArr[curPageID]->screen);
         }
+    }
+}
+
+void PageManager_::loadAll()
+{
+    for (uint8_t i = 0; i < MAX_PAGE; i++)
+    {
+        if (PageArr[i] != nullptr)
+        {
+            curPageID = (PageID)i;
+            PageArr[i]->load();
+            PageArr[i]->unload();
+            Serial.println("page loadAll(): " + String(i));
+            Serial.flush();
+        }
+    }
+}
+
+void PageManager_::loadFistPage(PageID pageID)
+{
+    // load the first page
+    curPageID = pageID;
+    if (PageArr[curPageID] != nullptr)
+    {
+        PageArr[curPageID]->load();
+        lv_screen_load(PageArr[curPageID]->screen);
     }
 }
 

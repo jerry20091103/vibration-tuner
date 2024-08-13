@@ -103,19 +103,18 @@ void MetronomeOptionsPage::init()
     // create screen
     screen = lv_obj_create(NULL);
     lv_obj_set_style_bg_color(screen, lv_color_black(), 0);
-    // set metronome options
-    metronome.setBeatCount(beatCount);
     // create title
     lv_obj_t *titleArea = lv_obj_create(screen);
-    lv_obj_set_size(titleArea, 320, 60);
+    lv_obj_set_size(titleArea, 320, 55);
     lv_obj_align(titleArea, LV_ALIGN_TOP_LEFT, 0, 0);
+    lv_obj_remove_flag(titleArea, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_t *title = lv_label_create(titleArea);
     lv_label_set_text(title, "Metronome Options");
-    lv_obj_set_style_text_font(title, &lv_font_montserrat_26, 0);
+    lv_obj_set_style_text_font(title, &lv_font_montserrat_24, 0);
     // list
     lv_obj_t *list = lv_list_create(screen);
-    lv_obj_set_size(list, 320, 180);
-    lv_obj_set_pos(list, 0, 60);
+    lv_obj_set_size(list, 320, 185);
+    lv_obj_set_pos(list, 0, 55);
 
     listGroup = lv_group_create();
 
@@ -135,6 +134,8 @@ void MetronomeOptionsPage::init()
 void MetronomeOptionsPage::load()
 {
     enc0->changePrecision(0, 0); // use direction mode
+    // set metronome options
+    metronome.setBeatCount(beatCount);
 }
 
 void MetronomeOptionsPage::unload()

@@ -54,6 +54,9 @@ public:
     void init();
     // Switch to a page
     void switchPage(PageID pageID, bool useAnim = false);
+    // load all pages once to set user data
+    void loadAll();
+    void loadFistPage(PageID pageID);
     
 private:
     // Private constructor to prevent instantiation
