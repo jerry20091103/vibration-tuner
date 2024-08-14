@@ -17,13 +17,16 @@ public:
 private:
     static void setHapticMode(int mode, int level, bool isStrong);
 
+    // user data
     int beatCount = 4;
     int strongHapticMode = 1;
     int weakHapticMode = 2;
     int hapticLevel = 0;
     int buzzerLevel = 10;
+    // lvgl objects
     lv_group_t *listGroup;
     lv_obj_t *listItem[5];
+    // variables
     bool isAdjusting = false;
     const char *hapticModeStr[4] = {"Off", "Click", "Tick", "Bump"};
     const char *hapticLevelStr[4] = {"Strong", "Medium", "Weak"};

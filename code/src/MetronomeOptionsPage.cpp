@@ -136,6 +136,9 @@ void MetronomeOptionsPage::load()
     enc0->changePrecision(0, 0); // use direction mode
     // set metronome options
     metronome.setBeatCount(beatCount);
+    setHapticMode(strongHapticMode, hapticLevel, true);
+    setHapticMode(weakHapticMode, hapticLevel, false);
+    // metronome.setBuzzerLevel(buzzerLevel);
 }
 
 void MetronomeOptionsPage::unload()

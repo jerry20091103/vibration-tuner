@@ -19,7 +19,7 @@ public:
     void load();
     void unload();
 private:
-    // data
+    // user data
     int currentBPM = 60;
     // lvgl object ref
     lv_obj_t *beatLED[16];
