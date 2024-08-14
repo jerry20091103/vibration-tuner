@@ -29,3 +29,31 @@ The metronomone allows the user to set a tempo and have the device vibrate at th
     - 0 is silent, 10 is the loudest.
 
 ## Tuner
+The tuner use the piezo input to detect the frequency of the sound and display it on the screen. This is single note detection for now.
+### Piezo input
+- Currently connected to the analog input pin D9.
+- The `analogSetPinAttenuation()` is set to 0dB for the piezo input.
+- Use `analogRead()` to read the input value.
+- It may be better to use `analogReadContinuous()` to get the input value at a set interval (not tested yet).
+- visit https://espressif-docs.readthedocs-hosted.com/projects/arduino-esp32/en/latest/api/adc.html for more info on the ADC and continuous reading.
+### Functions
+- start(): 
+    - Starts the tuner.
+    - The tuner will start listening to the input and detect the frequency.
+- stop():
+    - Stops the tuner to save cpu in other modes.
+- getFrequency():
+    - Returns the frequency of the input sound.
+    - Ideally, we can get a new value at least every 20ms (50Hz), because the screen refresh rate is 50Hz.
+- getNote():
+    - Returns the note number of the input sound.
+    - If the frequency is not exactly a note, it will return the nearest note.
+    - The note is in the format of [midi note number](https://inspiredacoustics.com/en/MIDI_note_numbers_and_center_frequencies).
+- getCent():
+    - Returns the cent difference from the nearest note.
+    - one cent is 1/100 of a semitone.
+    - range is -50 to 50.
+- setReferenceFrequency(int frequency):
+    - Sets the reference frequency for the tuner in Hz
+    - Default: 440H. The means the note A4 is defined as 440Hz.
+    - range: 400-480Hz
