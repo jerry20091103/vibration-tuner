@@ -1,6 +1,7 @@
 #include "hardware.h"
 #include "pages.h"
 #include "Adafruit_DRV2605.h"
+#include "Prompter.h"
 
 int buzzer_max = 0;
 int buzzer_min = 4095;
@@ -51,6 +52,29 @@ void setup() {
 	// set buzzer pin as input
 	pinMode(BUZZER_PIN, INPUT);
 	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
+
+	// Prompter prompter;
+	String json = R"({
+		"beatsPerMeasure": 4,
+		"chords": [
+			{"name": "Cmaj", "startBeat": 0, "endBeat": 1},
+			{"name": "Am", "startBeat": 1, "endBeat": 2},
+			{"name": "Fmaj", "startBeat": 2, "endBeat": 3},
+			{"name": "Gmaj", "startBeat": 3, "endBeat": 4}
+		]
+		})";
+
+
+	prompter.start();
+	prompter.loadMusicScoreFromJSON(json);
+	prompter.setCurrentBar(0); 
+
+	prompter.getCurrentChord();
+	prompter.getNextChord();
+	prompter.getNextNextChord();
+
+
+
 }
 
 void loop() {
