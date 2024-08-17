@@ -1,17 +1,20 @@
 #ifndef PROMPTER_H
 #define PROMPTER_H
 
-#include <ArduinoJson.h> 
+#include <ArduinoJson.h>
+
 #include <string>
 #include <vector>
 
-struct Chord {
+struct Chord
+{
     std::string name;
     int startBeat;
     int endBeat;
 };
 
-struct MusicScore {
+struct MusicScore
+{
     int id;
     std::string title;
     int BPM;
@@ -19,8 +22,9 @@ struct MusicScore {
     std::vector<Chord> chords;
 };
 
-class Prompter {
-public:
+class Prompter
+{
+  public:
     Prompter();
     void start();
     void stop();
@@ -36,8 +40,8 @@ public:
     int getCurrentBeat();
     std::string getChordAtBeat(int beat);
     std::string getCurrentChord();
-
-private:
+    
+  private:
     MusicScore musicScore;
     int currentBeat;
     int currentChord;
@@ -45,7 +49,7 @@ private:
     bool isRunning;
     int prompterTaskID;
 
-    static void chordUpdateCallback(); 
+    static void chordUpdateCallback();
 };
 
 extern Prompter prompter;
