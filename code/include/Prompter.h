@@ -11,15 +11,12 @@ struct Chord {
     int endBeat;
 };
 
-struct Bar {
-    std::vector<Chord> chords;
-};
-
 struct MusicScore {
-    std::string name;
+    int id;
+    std::string title;
     int BPM;
     int beatsPerMeasure;
-    std::vector<Bar> bars;
+    std::vector<Chord> chords;
 };
 
 class Prompter {
@@ -27,24 +24,26 @@ public:
     Prompter();
     void start();
     void stop();
-    void setCurrentBar(int bar);
-    int getCurrentBar();
+    double getCurrentBar();
     void setMusicScore(const MusicScore& score);
     void loadMusicScoreFromJSON(const String& json);
     void setSpeed(float speed);
-    std::string getCurrentChord();
-    std::string getNextChord();
-    std::string getNextNextChord();
+    // std::string getCurrentChord();
+    std::vector<std::string> getNext8Chord();
     void updateCurrentBeat();
+    MusicScore getMusicScore(int id);
+    void setCurrentBeat(int beat);
+    int getCurrentBeat();
+    std::string getChordAtBeat(int beat);
+    std::string getCurrentChord();
 
 private:
     MusicScore musicScore;
     int currentBeat;
-    int currentBar;
     int currentChord;
     float speedMultiplier;
     bool isRunning;
-    int displayTaskID;
+    int prompterTaskID;
 
     static void chordUpdateCallback(); 
 };

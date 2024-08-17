@@ -54,75 +54,26 @@ void setup() {
 	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
 
 	String json = R"({
-		"beatsPerMeasure": 4,
-		"musicScore": [
-			{
-				"id": 0,
+				"BPM" : 120,
+				"beatsPerMeasure": 4,
 				"chords": [
 					{"name": "C", "startBeat": 0, "endBeat": 1},
 					{"name": "Am", "startBeat": 1, "endBeat": 2},
 					{"name": "F", "startBeat": 2, "endBeat": 3},
-					{"name": "G", "startBeat": 3, "endBeat": 4}
+					{"name": "G", "startBeat": 3, "endBeat": 4},
+					{"name": "Em", "startBeat": 4, "endBeat": 5},
+					{"name": "G", "startBeat": 5, "endBeat": 6},
+					{"name": "C", "startBeat": 6, "endBeat": 7},
+					{"name": "Am", "startBeat": 7, "endBeat": 8}
 				]
-			},
-			{
-				"id": 1,
-				"chords": [
-					{"name": "Em", "startBeat": 0, "endBeat": 1},
-					{"name": "G", "startBeat": 1, "endBeat": 2},
-					{"name": "C", "startBeat": 2, "endBeat": 3},
-					{"name": "Am", "startBeat": 3, "endBeat": 4}
-				]
-			},
-			{
-				"id": 2,
-				"chords": [
-					{"name": "Dm", "startBeat": 0, "endBeat": 1},
-					{"name": "G", "startBeat": 1, "endBeat": 2},
-					{"name": "C", "startBeat": 2, "endBeat": 3},
-					{"name": "E", "startBeat": 3, "endBeat": 4}
-				]
-			},
-			{
-				"id": 3,
-				"chords": [
-					{"name": "F", "startBeat": 0, "endBeat": 1},
-					{"name": "Am", "startBeat": 1, "endBeat": 2},
-					{"name": "Dm", "startBeat": 2, "endBeat": 3},
-					{"name": "G", "startBeat": 3, "endBeat": 4}
-				]
-			},
-			{
-				"id": 4,
-				"chords": [
-					{"name": "C", "startBeat": 0, "endBeat": 1},
-					{"name": "E", "startBeat": 1, "endBeat": 2},
-					{"name": "Am", "startBeat": 2, "endBeat": 3},
-					{"name": "F", "startBeat": 3, "endBeat": 4}
-				]
-			},
-			{
-				"id": 5,
-				"chords": [
-					{"name": "G", "startBeat": 0, "endBeat": 1},
-					{"name": "C", "startBeat": 1, "endBeat": 2},
-					{"name": "Em", "startBeat": 2, "endBeat": 3},
-					{"name": "Am", "startBeat": 3, "endBeat": 4}
-				]
-			}
-		]
-	})";
+			})";
 
 
-	prompter.start();
+
 	prompter.loadMusicScoreFromJSON(json);
-	prompter.setCurrentBar(0); 
-
-	prompter.getCurrentChord();
-	prompter.getNextChord();
-	prompter.getNextNextChord();
-
-
+	prompter.setCurrentBeat(0); 
+	// prompter.setSpeed(0.5); 
+	prompter.start();
 
 }
 
