@@ -45,7 +45,7 @@ void setup() {
 	taskManager.scheduleFixedRate(5, updateGui);
 	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
 	// taskManager.scheduleFixedRate(1000, testVirbration);
-	taskManager.scheduleFixedRate(500, check_buzzer_max);
+	// taskManager.scheduleFixedRate(500, check_buzzer_max);
 
 	// play 440 hz with buzzer
 	// tone(BUZZER_PIN, 440);
@@ -53,16 +53,65 @@ void setup() {
 	pinMode(BUZZER_PIN, INPUT);
 	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
 
-	// Prompter prompter;
 	String json = R"({
 		"beatsPerMeasure": 4,
-		"chords": [
-			{"name": "Cmaj", "startBeat": 0, "endBeat": 1},
-			{"name": "Am", "startBeat": 1, "endBeat": 2},
-			{"name": "Fmaj", "startBeat": 2, "endBeat": 3},
-			{"name": "Gmaj", "startBeat": 3, "endBeat": 4}
+		"musicScore": [
+			{
+				"id": 0,
+				"chords": [
+					{"name": "C", "startBeat": 0, "endBeat": 1},
+					{"name": "Am", "startBeat": 1, "endBeat": 2},
+					{"name": "F", "startBeat": 2, "endBeat": 3},
+					{"name": "G", "startBeat": 3, "endBeat": 4}
+				]
+			},
+			{
+				"id": 1,
+				"chords": [
+					{"name": "Em", "startBeat": 0, "endBeat": 1},
+					{"name": "G", "startBeat": 1, "endBeat": 2},
+					{"name": "C", "startBeat": 2, "endBeat": 3},
+					{"name": "Am", "startBeat": 3, "endBeat": 4}
+				]
+			},
+			{
+				"id": 2,
+				"chords": [
+					{"name": "Dm", "startBeat": 0, "endBeat": 1},
+					{"name": "G", "startBeat": 1, "endBeat": 2},
+					{"name": "C", "startBeat": 2, "endBeat": 3},
+					{"name": "E", "startBeat": 3, "endBeat": 4}
+				]
+			},
+			{
+				"id": 3,
+				"chords": [
+					{"name": "F", "startBeat": 0, "endBeat": 1},
+					{"name": "Am", "startBeat": 1, "endBeat": 2},
+					{"name": "Dm", "startBeat": 2, "endBeat": 3},
+					{"name": "G", "startBeat": 3, "endBeat": 4}
+				]
+			},
+			{
+				"id": 4,
+				"chords": [
+					{"name": "C", "startBeat": 0, "endBeat": 1},
+					{"name": "E", "startBeat": 1, "endBeat": 2},
+					{"name": "Am", "startBeat": 2, "endBeat": 3},
+					{"name": "F", "startBeat": 3, "endBeat": 4}
+				]
+			},
+			{
+				"id": 5,
+				"chords": [
+					{"name": "G", "startBeat": 0, "endBeat": 1},
+					{"name": "C", "startBeat": 1, "endBeat": 2},
+					{"name": "Em", "startBeat": 2, "endBeat": 3},
+					{"name": "Am", "startBeat": 3, "endBeat": 4}
+				]
+			}
 		]
-		})";
+	})";
 
 
 	prompter.start();

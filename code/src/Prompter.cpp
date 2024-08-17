@@ -3,10 +3,10 @@
 
 Prompter prompter;
 
-Prompter::Prompter()
-{
+Prompter::Prompter() {
     currentBeat = 0;
     currentBar = 0;
+    currentChord = 0;
     speedMultiplier = 1.0;
     isRunning = false;
     displayTaskID = -1;
@@ -32,8 +32,7 @@ void Prompter::stop() {
 void Prompter::setCurrentBar(int bar) {
     currentBar = bar;
     currentBeat = bar * musicScore.beatsPerMeasure;
-    Serial.print("Current bar set to: ");
-    Serial.println(currentBar);
+    getCurrentChord();
 }
 
 int Prompter::getCurrentBar() {
@@ -42,7 +41,6 @@ int Prompter::getCurrentBar() {
 
 void Prompter::setMusicScore(const MusicScore& score) {
     musicScore = score;
-    Serial.println(musicScore.beatsPerMeasure);
     Serial.println("Music score set.");
 }
 
@@ -55,23 +53,25 @@ void Prompter::loadMusicScoreFromJSON(const String& json) {
         return;
     }
 
-    MusicScore score;
-    score.beatsPerMeasure = doc["beatsPerMeasure"];
-
-    JsonArray chords = doc["chords"];
-    for (JsonObject chord : chords) {
-        Chord newChord;
-        newChord.name = chord["name"].as<std::string>();
-        newChord.startBeat = chord["startBeat"];
-        newChord.endBeat = chord["endBeat"];
-        score.chords.push_back(newChord);
+    musicScore.beatsPerMeasure = doc["beatsPerMeasure"];
+    JsonArray bars = doc["musicScore"];
+    for (JsonObject bar : bars) {
+        Bar newBar;
+        for (JsonObject chord : bar["chords"].as<JsonArray>()) {
+            Chord newChord;
+            newChord.name = chord["name"].as<std::string>();
+            newChord.startBeat = chord["startBeat"];
+            newChord.endBeat = chord["endBeat"];
+            newBar.chords.push_back(newChord);
+        }
+        musicScore.bars.push_back(newBar);
     }
 
-    setMusicScore(score);
-    Serial.println("Music score loaded from JSON and set.");
+    setMusicScore(musicScore);
 }
 
-void Prompter::setSpeed(float speed) {
+void Prompter::setSpeed(float speed)
+{
     if (speed >= 0.5 && speed <= 2.0) {
         speedMultiplier = speed;
         Serial.print("Speed set to: ");
@@ -80,43 +80,57 @@ void Prompter::setSpeed(float speed) {
 }
 
 std::string Prompter::getCurrentChord() {
-    int index = findChordIndexByBeat(currentBeat);
-    if (index != -1) {
-        Serial.print("Current chord: ");
-        Serial.println(musicScore.chords[index].name.c_str());
-        return musicScore.chords[index].name;
+    if (currentBar >= musicScore.bars.size()) {
+        Serial.println("getCurrentChord: | No more chords |");
+        return "| No more chords |";
     }
-    return "";
+
+    const Bar& currentBarChords = musicScore.bars[currentBar];
+    std::string output = "| ";
+    for (const Chord& chord : currentBarChords.chords) {
+        output += chord.name + " | ";
+    }
+    Serial.print("getCurrentChord: ");
+    Serial.println(output.c_str());
+    return output;
 }
+
 
 std::string Prompter::getNextChord() {
-    int index = findChordIndexByBeat(currentBeat);
-    if (index != -1 && index + 1 < musicScore.chords.size()) {
-        Serial.print("Next chord: ");
-        Serial.println(musicScore.chords[index + 1].name.c_str());
-        return musicScore.chords[index + 1].name;
+    int nextBarIndex = currentBar + 1;
+    if (nextBarIndex >= musicScore.bars.size()) {
+        Serial.println("getNextChord: | No more chords |");
+        return "| No more chords |";
     }
-    return "";
+
+    const Bar& nextBar = musicScore.bars[nextBarIndex];
+    std::string output = "| ";
+    for (const Chord& chord : nextBar.chords) {
+        output += chord.name + " | ";
+    }
+    Serial.print("getNextChord: ");
+    Serial.println(output.c_str());
+    return output;
 }
+
 
 std::string Prompter::getNextNextChord() {
-    int index = findChordIndexByBeat(currentBeat);
-    if (index != -1 && index + 2 < musicScore.chords.size()) {
-        Serial.print("Next next chord: ");
-        Serial.println(musicScore.chords[index + 2].name.c_str());
-        return musicScore.chords[index + 2].name;
+    int nextNextBarIndex = currentBar + 2;
+    if (nextNextBarIndex >= musicScore.bars.size()) {
+        Serial.println("getNextNextChord: | No more chords |");
+        return "| No more chords |";
     }
-    return "";
+
+    const Bar& nextNextBar = musicScore.bars[nextNextBarIndex];
+    std::string output = "| ";
+    for (const Chord& chord : nextNextBar.chords) {
+        output += chord.name + " | ";
+    }
+    Serial.print("getNextNextChord: ");
+    Serial.println(output.c_str());
+    return output;
 }
 
-int Prompter::findChordIndexByBeat(int beat) {
-    for (int i = 0; i < musicScore.chords.size(); i++) {
-        if (musicScore.chords[i].startBeat <= beat && musicScore.chords[i].endBeat > beat) {
-            return i;
-        }
-    }
-    return -1;
-}
 
 void Prompter::chordUpdateCallback() {
     prompter.updateCurrentBeat(); 
@@ -124,17 +138,13 @@ void Prompter::chordUpdateCallback() {
 
 void Prompter::updateCurrentBeat() {
     currentBeat++;
-    Serial.print("musicScore.beatsPerMeasure: ");
-    Serial.println(musicScore.beatsPerMeasure);
-
     if (currentBeat >= musicScore.beatsPerMeasure) {
         currentBeat = 0;
         currentBar++; 
+        getCurrentChord();
     }
-
     Serial.print("Current Bar: ");
     Serial.print(currentBar);
     Serial.print(", Current Beat: ");
     Serial.println(currentBeat);
-    getCurrentChord();
 }

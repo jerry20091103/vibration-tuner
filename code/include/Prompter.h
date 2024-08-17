@@ -11,11 +11,15 @@ struct Chord {
     int endBeat;
 };
 
+struct Bar {
+    std::vector<Chord> chords;
+};
+
 struct MusicScore {
     std::string name;
     int BPM;
     int beatsPerMeasure;
-    std::vector<Chord> chords;
+    std::vector<Bar> bars;
 };
 
 class Prompter {
@@ -31,19 +35,20 @@ public:
     std::string getCurrentChord();
     std::string getNextChord();
     std::string getNextNextChord();
-    int findChordIndexByBeat(int beat);
     void updateCurrentBeat();
 
 private:
     MusicScore musicScore;
     int currentBeat;
     int currentBar;
+    int currentChord;
     float speedMultiplier;
     bool isRunning;
     int displayTaskID;
 
     static void chordUpdateCallback(); 
 };
+
 extern Prompter prompter;
 
 #endif // PROMPTER_H
