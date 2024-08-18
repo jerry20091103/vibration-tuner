@@ -11,10 +11,17 @@ Prompter::Prompter()
     speedMultiplier = 1.0;
     isRunning = false;
     prompterTaskID = -1;
+    isScoreLoaded = false;
 }
 
-void Prompter::start()
+bool Prompter::start()
 {
+    if (!isScoreLoaded)
+    {
+        Serial.println(
+            "Error: Music score not loaded. Please load the music score before starting.");
+        return false;
+    }
     if (!isRunning)
     {
         Serial.println("Prompter started.");
@@ -22,17 +29,23 @@ void Prompter::start()
         int period = 60000000 / metronome.getBPM();
         prompterTaskID = taskManager.scheduleFixedRate(
             period, chordUpdateCallback, TIME_MICROS);
+        return true;
     }
+    Serial.println("Error: Prompter already start");
+    return false;
 }
 
-void Prompter::stop()
+bool Prompter::stop()
 {
     if (isRunning)
     {
         Serial.println("Prompter stopped.");
         isRunning = false;
         taskManager.cancelTask(prompterTaskID);
+        return true;
     }
+    Serial.println("Error: Prompter already stop");
+    return false;
 }
 
 void Prompter::setCurrentBeat(int beat)
@@ -55,6 +68,7 @@ void Prompter::setMusicScore(const MusicScore& score)
     musicScore = score;
     Serial.println("setMusicScore end");
     metronome.setBPM(score.BPM);
+    isScoreLoaded = true;
 }
 
 void Prompter::loadMusicScoreFromJSON(const String& json)

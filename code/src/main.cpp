@@ -68,13 +68,15 @@ void setup() {
 				]
 			})";
 
-
-
-	prompter.loadMusicScoreFromJSON(json);
-	prompter.setCurrentBeat(0); 
-	// prompter.setSpeed(0.5); 
-	prompter.start();
-
+    // prompter.loadMusicScoreFromJSON(json);
+    // prompter.setCurrentBeat(0);
+    // prompter.setSpeed(0.5);
+    prompter.start();
+    Serial.println("-------");
+    prompter.loadMusicScoreFromJSON(json);
+    prompter.setCurrentBeat(0);
+    // prompter.setSpeed(0.5);
+    prompter.start();
 }
 
 void loop() {
