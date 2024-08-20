@@ -9,6 +9,7 @@ int buzzer_min = 4095;
 void toggleLed() {
 	static bool ledState = false;
 	digitalWrite(LED_BUILTIN, ledState);
+	analogWrite(BUZZER_PIN, ledState ? 0 : 200);
 	ledState = !ledState;
 }
 
@@ -30,13 +31,17 @@ void check_buzzer_max() {
 void setup() {
 	// put your setup code here, to run once:
 	Serial.begin(9600);
-	while (!Serial)
-	{
-		/* code */
-	}
+	// while (!Serial)
+	// {
+	// 	/* code */
+	// }
 	delay(1000); // delay here to wait for serial monitor to connect
 	Serial.println("Hello, World!");
 	hardwareSetup();
+	// load all pages once to set user data
+	PageManager.loadAll();
+	// load the first page
+	PageManager.loadFistPage(PAGE_TUNER);
 	// blink led
 	pinMode(LED_BUILTIN, OUTPUT);
 	taskManager.scheduleFixedRate(1000, toggleLed);
@@ -83,13 +88,13 @@ void loop() {
 	// put your main code here, to run repeatedly:
 	taskManager.runLoop();
 	// read buzzer pin
-	int buzzer_val = analogRead(BUZZER_PIN);
-	if (buzzer_val > buzzer_max)
-	{
-		buzzer_max = buzzer_val;
-	}
-	if (buzzer_val < buzzer_min)
-	{
-		buzzer_min = buzzer_val;
-	}
+	// int buzzer_val = analogRead(BUZZER_PIN);
+	// if (buzzer_val > buzzer_max)
+	// {
+	// 	buzzer_max = buzzer_val;
+	// }
+	// if (buzzer_val < buzzer_min)
+	// {
+	// 	buzzer_min = buzzer_val;
+	// }
 }
