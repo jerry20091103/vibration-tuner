@@ -59,29 +59,29 @@ void setup() {
 	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
 
 	String json = R"({
-				"BPM" : 120,
+				"BPM" : 60,
 				"beatsPerMeasure": 4,
 				"chords": [
-					{"name": "C", "startBeat": 0, "endBeat": 1},
-					{"name": "Am", "startBeat": 1, "endBeat": 2},
-					{"name": "F", "startBeat": 2, "endBeat": 3},
-					{"name": "G", "startBeat": 3, "endBeat": 4},
-					{"name": "Em", "startBeat": 4, "endBeat": 5},
-					{"name": "G", "startBeat": 5, "endBeat": 6},
-					{"name": "C", "startBeat": 6, "endBeat": 7},
-					{"name": "Am", "startBeat": 7, "endBeat": 8}
+					{"name": "C", "startBeat": 0, "endBeat": 4},
+					{"name": "Am", "startBeat": 4, "endBeat": 8},
+					{"name": "F", "startBeat": 8, "endBeat": 12},
+					{"name": "G", "startBeat": 12, "endBeat": 16},
+					{"name": "Em", "startBeat": 16, "endBeat": 18},
+					{"name": "G", "startBeat": 18, "endBeat": 20},
+					{"name": "C", "startBeat": 20, "endBeat": 22},
+					{"name": "Am", "startBeat": 22, "endBeat": 24}
 				]
 			})";
 
     // prompter.loadMusicScoreFromJSON(json);
     // prompter.setCurrentBeat(0);
     // prompter.setSpeed(0.5);
-    prompter.start();
-    Serial.println("-------");
+    // prompter.start();
+    // Serial.println("-------");
     prompter.loadMusicScoreFromJSON(json);
     prompter.setCurrentBeat(0);
     // prompter.setSpeed(0.5);
-    prompter.start();
+    // prompter.start();
 }
 
 void loop() {

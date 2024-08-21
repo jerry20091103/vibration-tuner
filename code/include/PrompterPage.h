@@ -15,7 +15,13 @@ public:
     void load();
     void unload();
 private:
-    // add your variables here
+    // user data
+
+    // lvgl objects
+    lv_obj_t *chordLabel[8];
+    lv_obj_t *beatLabel;
+    // variables
+    int currentBeat = -1;
 };
 
 #endif // PROMPTER_PAGE_H
