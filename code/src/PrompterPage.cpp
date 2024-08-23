@@ -21,7 +21,7 @@ void PrompterPage::onBtnHold(uint8_t pin)
 
 void PrompterPage::onBtnDoubleClicked(uint8_t pin)
 {
-    Serial.println("PrompterPage: onBtnDoubleClicked");
+    PageManager.switchPage(PAGE_PROMPTER_OPTIONS);
 }
 
 void PrompterPage::onEncTurned(int value)

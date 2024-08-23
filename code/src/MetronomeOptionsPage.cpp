@@ -86,7 +86,7 @@ void MetronomeOptionsPage::onEncTurned(int value)
         {
             lv_group_focus_next(listGroup);
         }
-        else
+        else if (value < 0)
         {
             lv_group_focus_prev(listGroup);
         }
@@ -118,11 +118,11 @@ void MetronomeOptionsPage::init()
 
     listGroup = lv_group_create();
 
-    listItem[0] = createOptionListItem(list, LV_SYMBOL_AUDIO, "Beats per measure", String(beatCount).c_str());
-    listItem[1] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Primary haptic waveform", hapticModeStr[strongHapticMode]);
-    listItem[2] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Secondary haptic waveform", hapticModeStr[weakHapticMode]);
-    listItem[3] = createOptionListItem(list, LV_SYMBOL_VOLUME_MAX, "Buzzer volume", "10");
-    listItem[4] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Haptic intensity", "Strong");
+    listItem[0] = createOptionListItem(list, LV_SYMBOL_AUDIO, "Beats per measure", String(beatCount).c_str(), LV_PALETTE_LIGHT_BLUE);
+    listItem[1] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Primary haptic waveform", hapticModeStr[strongHapticMode], LV_PALETTE_LIGHT_BLUE);
+    listItem[2] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Secondary haptic waveform", hapticModeStr[weakHapticMode], LV_PALETTE_LIGHT_BLUE);
+    listItem[3] = createOptionListItem(list, LV_SYMBOL_VOLUME_MAX, "Buzzer volume", "10", LV_PALETTE_LIGHT_BLUE);
+    listItem[4] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Haptic intensity", "Strong", LV_PALETTE_LIGHT_BLUE);
 
     for (int i = 0; i < 5; i++)
     {
