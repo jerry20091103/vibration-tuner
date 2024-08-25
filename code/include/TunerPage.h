@@ -15,7 +15,20 @@ public:
     void load();
     void unload();
 private:
-    // add your variables here
+    void updateTunerCent(int cent);
+    void setTunerLED(bool leftOn, bool midOn, bool rightOn);
+    // user data
+    int a4Freq = 440;
+    // lvgl object ref
+    lv_obj_t *tuneLED[3];
+    lv_obj_t *refFreqArc;
+    lv_obj_t *indicatorBar;
+    lv_obj_t *noteLabel;
+    lv_obj_t *freqLabel;
+    lv_obj_t *centLabel;
+    // variables
+    int testCent = 0;
+    bool lastTuneLED[3] = {false, false, false};
 };
 
 #endif // TUNER_PAGE_H
