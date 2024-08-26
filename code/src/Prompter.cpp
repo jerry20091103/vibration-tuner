@@ -12,6 +12,30 @@ Prompter::Prompter()
     isRunning = false;
     prompterTaskID = -1;
     isScoreLoaded = false;
+    currentBPM = 60;
+}
+
+void Prompter::togglePrompter()
+{
+    if (isRunning)
+    {
+        isRunning = false;
+        taskManager.cancelTask(prompterTaskID);
+        metronome.stopVibrating();
+    }
+    else
+    {
+        currentBeat = 0;
+        isRunning = true;
+        int period = 60000000 / currentBPM;
+        Serial.println("Prompter started.");
+        prompterTaskID = taskManager.scheduleFixedRate(
+            period, chordUpdateCallback, TIME_MICROS);
+
+        // start metronome
+        metronome.setBPM(currentBPM);
+        metronome.startVibrating();
+    }
 }
 
 bool Prompter::start()
@@ -24,11 +48,17 @@ bool Prompter::start()
     }
     if (!isRunning)
     {
-        Serial.println("Prompter started.");
+        currentBeat = 0;
         isRunning = true;
-        int period = 60000000 / metronome.getBPM();
+        int period = 60000000 / currentBPM;
+        Serial.println("Prompter started.");
+
         prompterTaskID = taskManager.scheduleFixedRate(
             period, chordUpdateCallback, TIME_MICROS);
+
+        // start metronome
+        metronome.setBPM(currentBPM);
+        metronome.startVibrating();
         return true;
     }
     Serial.println("Error: Prompter already start");
@@ -42,6 +72,7 @@ bool Prompter::stop()
         Serial.println("Prompter stopped.");
         isRunning = false;
         taskManager.cancelTask(prompterTaskID);
+        metronome.stopVibrating();
         return true;
     }
     Serial.println("Error: Prompter already stop");
@@ -58,17 +89,18 @@ int Prompter::getCurrentBeat()
     return currentBeat;
 }
 
-double Prompter::getCurrentBar()
+int Prompter::getCurrentBar()
 {
-    return (double)currentBeat / musicScore.beatsPerMeasure;
+    return floor((double)currentBeat / musicScore.beatsPerMeasure);
 }
 
 void Prompter::setMusicScore(const MusicScore& score)
 {
     musicScore = score;
-    Serial.println("setMusicScore end");
     metronome.setBPM(score.BPM);
+    currentBPM = musicScore.BPM;
     isScoreLoaded = true;
+    Serial.println("setMusicScore end");
 }
 
 void Prompter::loadMusicScoreFromJSON(const String& json)
@@ -105,10 +137,26 @@ void Prompter::setSpeed(float speed)
     if (speed >= 0.5 && speed <= 2.0)
     {
         speedMultiplier = speed;
-        metronome.setBPM(metronome.getBPM() * speedMultiplier);
+        currentBPM = prompter.getBPM() * speed;
+        if (isRunning)
+        {
+            taskManager.cancelTask(prompterTaskID);
+            int period = 60000000 / currentBPM;
+            prompterTaskID = taskManager.scheduleFixedRate(
+                period, chordUpdateCallback, TIME_MICROS);
+            // sync metronome
+            metronome.setBPM(currentBPM);
+        }
         Serial.print("Speed set to: ");
         Serial.println(speedMultiplier);
+        Serial.print("current BPM: ");
+        Serial.println(currentBPM);
     }
+}
+
+float Prompter::getSpeed()
+{
+    return speedMultiplier;
 }
 
 std::string Prompter::getChordAtBeat(int beat)
@@ -126,6 +174,40 @@ std::string Prompter::getChordAtBeat(int beat)
 std::string Prompter::getCurrentChord()
 {
     return getChordAtBeat(currentBeat);
+}
+
+int Prompter::getBeatsPerBar()
+{
+    return musicScore.beatsPerMeasure;
+}
+
+int Prompter::getScoreLength()
+{
+    return musicScore.chords.back().endBeat;
+}
+
+int Prompter::getBPM()
+{
+    return musicScore.BPM;
+}
+
+int Prompter::getCurrentBPM()
+{
+    return currentBPM;
+}
+
+std::vector<std::string> Prompter::getCurrent8Chord()
+{
+    std::vector<std::string> nextChords;
+    std::string output = "| ";
+    for (int i = 0; i < 8; i++)
+    {
+        nextChords.push_back(getChordAtBeat(currentBeat + i));
+        output += getChordAtBeat(currentBeat + i);
+        output += " | ";
+    }
+    Serial.println(output.c_str());
+    return nextChords;
 }
 
 std::vector<std::string> Prompter::getNext8Chord()
@@ -149,7 +231,6 @@ void Prompter::chordUpdateCallback()
 
 void Prompter::updateCurrentBeat()
 {
-
     Serial.print("Current Bar: ");
     Serial.print(getCurrentBar());
     Serial.print(", Current Beat: ");
@@ -158,8 +239,8 @@ void Prompter::updateCurrentBeat()
     Serial.print("Current Chord: ");
     Serial.println(getChordAtBeat(currentBeat).c_str());
 
-    Serial.print("Next 8 Chord: ");
-    getNext8Chord();
+    Serial.print("Current 8 Chord: ");
+    getCurrent8Chord();
 
     currentBeat++;
     if (currentBeat >= musicScore.chords.back().endBeat)

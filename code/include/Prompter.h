@@ -28,11 +28,11 @@ class Prompter
     Prompter();
     bool start();
     bool stop();
-    double getCurrentBar();
+    int getCurrentBar();
     void setMusicScore(const MusicScore& score);
     void loadMusicScoreFromJSON(const String& json);
     void setSpeed(float speed);
-    // std::string getCurrentChord();
+    std::vector<std::string> getCurrent8Chord();
     std::vector<std::string> getNext8Chord();
     void updateCurrentBeat();
     MusicScore getMusicScore(int id);
@@ -40,6 +40,12 @@ class Prompter
     int getCurrentBeat();
     std::string getChordAtBeat(int beat);
     std::string getCurrentChord();
+    int getBeatsPerBar();
+    int getScoreLength();
+    void togglePrompter();
+    float getSpeed();
+    int getBPM();
+    int getCurrentBPM();
 
   private:
     MusicScore musicScore;
@@ -49,6 +55,7 @@ class Prompter
     bool isRunning;
     int prompterTaskID;
     bool isScoreLoaded;
+    int currentBPM;
 
     static void chordUpdateCallback();
 };
