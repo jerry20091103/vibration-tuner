@@ -5,25 +5,43 @@
 
 void PrompterOptionsPage::onBtnPressed(uint8_t pin)
 {
-    if (isAdjusting)
+    // if USB transfer option is selected
+    if (lv_group_get_focused(listGroup) == listItem[1])
     {
-        isAdjusting = false;
-        lv_obj_t *valueLabel = getOptionListItemValueLabel(lv_group_get_focused(listGroup));
-        // set checked state
-        lv_obj_remove_state(getOptionListItemValueLabel(lv_group_get_focused(listGroup)), LV_STATE_CHECKED);
-        // remove left and right symbol
-        String valueStr = lv_label_get_text(valueLabel);
-        lv_label_set_text(valueLabel, removeAdjustingText(valueStr));
+        // show a message box
+        lv_obj_t *msgBox = lv_msgbox_create(NULL);
+        lv_obj_set_size(msgBox, 270, 190);
+        lv_obj_t *title = lv_msgbox_add_title(msgBox, "USB Transfer");
+        lv_obj_set_style_text_font(title, &lv_font_montserrat_24, 0);
+        lv_obj_t *text = lv_msgbox_add_text(msgBox, "Please connect via USB and send the music score with the editor program.");
+        lv_obj_set_style_text_font(text, &lv_font_montserrat_20, 0);
+        // load music score from USB
+        // prompter.loadMusicScoreFromUSBSerial();
+        taskManager.yieldForMicros(3000000); // todo: replace this with a function that waits USB serial data
+        lv_msgbox_close(msgBox);
     }
     else
     {
-        isAdjusting = true;
-        lv_obj_t *valueLabel = getOptionListItemValueLabel(lv_group_get_focused(listGroup));
-        // set checked state
-        lv_obj_add_state(valueLabel, LV_STATE_CHECKED);
-        // add left and right symbol
-        String valueStr = lv_label_get_text(valueLabel);
-        lv_label_set_text(valueLabel, createAdjustingText(valueStr));
+        if (isAdjusting)
+        {
+            isAdjusting = false;
+            lv_obj_t *valueLabel = getOptionListItemValueLabel(lv_group_get_focused(listGroup));
+            // set checked state
+            lv_obj_remove_state(getOptionListItemValueLabel(lv_group_get_focused(listGroup)), LV_STATE_CHECKED);
+            // remove left and right symbol
+            String valueStr = lv_label_get_text(valueLabel);
+            lv_label_set_text(valueLabel, removeAdjustingText(valueStr));
+        }
+        else
+        {
+            isAdjusting = true;
+            lv_obj_t *valueLabel = getOptionListItemValueLabel(lv_group_get_focused(listGroup));
+            // set checked state
+            lv_obj_add_state(valueLabel, LV_STATE_CHECKED);
+            // add left and right symbol
+            String valueStr = lv_label_get_text(valueLabel);
+            lv_label_set_text(valueLabel, createAdjustingText(valueStr));
+        }
     }
 }
 
@@ -86,8 +104,12 @@ void PrompterOptionsPage::init()
     listGroup = lv_group_create();
 
     listItem[0] = createOptionListItem(list, LV_SYMBOL_PLAY, "Speed", String(speed, 1).c_str(), LV_PALETTE_DEEP_ORANGE);
+    listItem[1] = createOptionListItem(list, LV_SYMBOL_USB, "Get score from USB", "", LV_PALETTE_DEEP_ORANGE);
 
-    lv_group_add_obj(listGroup, listItem[0]);
+    for (int i = 0; i < 2; i++)
+    {
+        lv_group_add_obj(listGroup, listItem[i]);
+    }
 
     lv_group_focus_obj(listItem[0]);
 }
