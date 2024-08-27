@@ -16,12 +16,14 @@ public:
     void unload();
 private:
     // user data
-
+    int currentBeat = 0;
     // lvgl objects
     lv_obj_t *chordLabel[8];
-    lv_obj_t *beatLabel;
+    lv_obj_t *positionArc;
+    lv_obj_t *bpmLabel;
+    lv_obj_t *speedLabel;
     // variables
-    int currentBeat = -1;
+    int lastBeat = -1;
 };
 
 #endif // PROMPTER_PAGE_H

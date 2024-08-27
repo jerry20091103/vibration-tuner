@@ -37,26 +37,6 @@ void setup() {
 	// }
 	delay(1000); // delay here to wait for serial monitor to connect
 	Serial.println("Hello, World!");
-	hardwareSetup();
-	// load all pages once to set user data
-	PageManager.loadAll();
-	// load the first page
-	PageManager.loadFistPage(PAGE_TUNER);
-	// blink led
-	pinMode(LED_BUILTIN, OUTPUT);
-	taskManager.scheduleFixedRate(1000, toggleLed);
-	
-	taskManager.scheduleFixedRate(1, updateButtons);
-	taskManager.scheduleFixedRate(5, updateGui);
-	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
-	// taskManager.scheduleFixedRate(1000, testVirbration);
-	// taskManager.scheduleFixedRate(500, check_buzzer_max);
-
-	// play 440 hz with buzzer
-	// tone(BUZZER_PIN, 440);
-	// set buzzer pin as input
-	pinMode(BUZZER_PIN, INPUT);
-	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
 
 	String json = R"({
 				"BPM" : 60,
@@ -82,6 +62,27 @@ void setup() {
     prompter.setCurrentBeat(0);
     // prompter.setSpeed(0.5);
     // prompter.start();
+
+	hardwareSetup();
+	// load all pages once to set user data
+	PageManager.loadAll();
+	// load the first page
+	PageManager.loadFistPage(PAGE_TUNER);
+	// blink led
+	pinMode(LED_BUILTIN, OUTPUT);
+	taskManager.scheduleFixedRate(1000, toggleLed);
+	
+	taskManager.scheduleFixedRate(1, updateButtons);
+	taskManager.scheduleFixedRate(5, updateGui);
+	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
+	// taskManager.scheduleFixedRate(1000, testVirbration);
+	// taskManager.scheduleFixedRate(500, check_buzzer_max);
+
+	// play 440 hz with buzzer
+	// tone(BUZZER_PIN, 440);
+	// set buzzer pin as input
+	pinMode(BUZZER_PIN, INPUT);
+	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
 }
 
 void loop() {
