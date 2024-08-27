@@ -22,6 +22,7 @@
 #define DRV_SCL D5
 
 #define BUZZER_PIN D9
+#define PIEZO_PIN D2
 
 // haptic waveform
 #define HAPTIC_WAVEFORM_CLICK 1
