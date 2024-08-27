@@ -13,6 +13,26 @@ Prompter::Prompter()
     prompterTaskID = -1;
     isScoreLoaded = false;
     currentBPM = 60;
+
+    // load default music score
+    musicScore = createDefaultMusicScore();
+}
+
+MusicScore Prompter::createDefaultMusicScore()
+{
+    MusicScore score;
+    score.BPM = 120;
+    score.beatsPerMeasure = 4;
+    // load default chords
+    score.chords.push_back({"C", 0, 4});
+    score.chords.push_back({"Am", 4, 8});
+    score.chords.push_back({"F", 8, 12});
+    score.chords.push_back({"G", 12, 16});
+    score.chords.push_back({"Em", 16, 18});
+    score.chords.push_back({"G", 18, 20});
+    score.chords.push_back({"C", 20, 22});
+    score.chords.push_back({"Am", 22, 24});
+    return score;
 }
 
 void Prompter::togglePrompter()
@@ -25,7 +45,6 @@ void Prompter::togglePrompter()
     }
     else
     {
-        currentBeat = 0;
         isRunning = true;
         int period = 60000000 / currentBPM;
         Serial.println("Prompter started.");
@@ -48,7 +67,6 @@ bool Prompter::start()
     }
     if (!isRunning)
     {
-        currentBeat = 0;
         isRunning = true;
         int period = 60000000 / currentBPM;
         Serial.println("Prompter started.");

@@ -46,6 +46,7 @@ class Prompter
     float getSpeed();
     int getBPM();
     int getCurrentBPM();
+    MusicScore createDefaultMusicScore();
 
   private:
     MusicScore musicScore;
