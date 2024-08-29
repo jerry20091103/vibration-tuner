@@ -2,8 +2,6 @@
 #include "pages.h"
 #include "Adafruit_DRV2605.h"
 
-int buzzer_max = 0;
-int buzzer_min = 4095;
 
 void toggleLed() {
 	static bool ledState = false;
@@ -16,10 +14,6 @@ void updateButtons() {
 	btnEnc.loop();
 }
 
-// void testVirbration() {
-// 	haptic.go();
-// 	Serial.println("Vibrating");
-// }
 
 void check_buzzer_max() {
 	Serial.println("Buzzer max: " + String(buzzer_max) + " min: " + String(buzzer_min));
@@ -48,23 +42,10 @@ void setup() {
 	taskManager.scheduleFixedRate(500, check_buzzer_max);
 
 	// play 440 hz with buzzer
-	// tone(BUZZER_PIN, 440);
-	// set buzzer pin as input
-	pinMode(BUZZER_PIN, INPUT);
-	analogSetPinAttenuation(BUZZER_PIN, ADC_0db);
+	tone(BUZZER_PIN, 440);
 }
 
 void loop() {
 	// put your main code here, to run repeatedly:
 	taskManager.runLoop();
-	// read buzzer pin
-	// int buzzer_val = analogRead(BUZZER_PIN);
-	// if (buzzer_val > buzzer_max)
-	// {
-	// 	buzzer_max = buzzer_val;
-	// }
-	// if (buzzer_val < buzzer_min)
-	// {
-	// 	buzzer_min = buzzer_val;
-	// }
 }
