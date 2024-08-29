@@ -61,7 +61,6 @@ void MetronomePage::update()
             }
         }
     }
-    
 }
 
 
@@ -145,7 +144,8 @@ void MetronomePage::load()
             lv_obj_set_size(beatLED[i], 30, 30);
         }
     }
-    
+    // set last beat count to force update at first load!
+    lastBeatCount = -1;
 }
 
 void MetronomePage::unload()
