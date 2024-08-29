@@ -6,7 +6,6 @@
 void toggleLed() {
 	static bool ledState = false;
 	digitalWrite(LED_BUILTIN, ledState);
-	analogWrite(BUZZER_PIN, ledState ? 0 : 200);
 	ledState = !ledState;
 }
 
@@ -14,12 +13,6 @@ void updateButtons() {
 	btnEnc.loop();
 }
 
-
-void check_buzzer_max() {
-	Serial.println("Buzzer max: " + String(buzzer_max) + " min: " + String(buzzer_min));
-	buzzer_max = 0;
-	buzzer_min = 4095;
-}
 
 void setup() {
 	// put your setup code here, to run once:
@@ -38,11 +31,8 @@ void setup() {
 	taskManager.scheduleFixedRate(1, updateButtons);
 	taskManager.scheduleFixedRate(5, updateGui);
 	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
-	// taskManager.scheduleFixedRate(1000, testVirbration);
-	taskManager.scheduleFixedRate(500, check_buzzer_max);
 
 	// play 440 hz with buzzer
-	tone(BUZZER_PIN, 440);
 }
 
 void loop() {
