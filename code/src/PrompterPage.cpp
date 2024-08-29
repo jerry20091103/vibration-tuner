@@ -40,14 +40,37 @@ void PrompterPage::update()
         currentBeat = lastBeat;
         // update chords
         std::vector<std::string> chords = prompter.getCurrent8Chord();
-        for (int i = 0; i < 8; i++)
+        lv_label_set_text(chordLabel[0], chords[0].c_str());
+        std::string stickyChord = "nan";
+        for (int i = 1; i < 8; i++)
         {
-            lv_label_set_text(chordLabel[i], chords[i].c_str());
+            if (chords[i] == stickyChord)
+            {
+                lv_label_set_text(chordLabel[i], "|");
+            }
+            else
+            {
+                lv_label_set_text(chordLabel[i], chords[i].c_str());
+                stickyChord = chords[i];
+            }
         }
         // update beat and bar
-        String beatBar = String(prompter.getCurrentBeat() % 4 + 1) + "/" + String(prompter.getCurrentBar() + 1);
+        int beatsPerBar = prompter.getBeatsPerBar();
+        String beatBar = String(prompter.getCurrentBeat() % beatsPerBar + 1) + "/" + String(prompter.getCurrentBar() + 1);
         lv_label_set_text(getArcValueLabel(positionArc), beatBar.c_str());
         lv_arc_set_value(positionArc, prompter.getCurrentBeat());
+        // update bar lines
+        for (int i = 0; i < 7; i++)
+        {
+            if (((prompter.getCurrentBeat() + i + 1) % beatsPerBar) == beatsPerBar - 1)
+            {
+                lv_obj_remove_flag(barLine[i], LV_OBJ_FLAG_HIDDEN);
+            }
+            else
+            {
+                lv_obj_add_flag(barLine[i], LV_OBJ_FLAG_HIDDEN);
+            }
+        }
     }
     
 }
@@ -78,6 +101,16 @@ void PrompterPage::init()
         lv_obj_set_style_text_font(chordLabel[i], &lv_font_montserrat_24, 0);
         lv_obj_align(chordLabel[i], LV_ALIGN_TOP_LEFT, 135, 34 * i - 34);
     }
+
+    // 7 bar lines
+    for (int i = 0; i < 7; i++)
+    {
+        barLine[i] = lv_line_create(screen);
+        lv_line_set_points(barLine[i], barLinePos[i], 2);
+        lv_obj_set_style_line_width(barLine[i], 2, 0);
+        lv_obj_set_style_line_color(barLine[i], lv_palette_darken(LV_PALETTE_DEEP_ORANGE, 4), 0);
+    }
+
     // position arc
     positionArc = createArc(screen, LV_PALETTE_DEEP_ORANGE, "Bar", 120, 10);
     lv_obj_align(positionArc, LV_ALIGN_TOP_LEFT, 0, 50);
