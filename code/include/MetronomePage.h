@@ -25,7 +25,7 @@ private:
     lv_obj_t *beatLED[16];
     lv_obj_t *bpmArc;
     // variables
-    int lastBeatCount = 0;
+    int lastBeatCount = -1;
 };
 
 #endif // METRONOME_PAGE_H
