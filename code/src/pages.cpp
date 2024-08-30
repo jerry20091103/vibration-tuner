@@ -3,6 +3,7 @@
 #include "MetronomePage.h"
 #include "PrompterPage.h"
 #include "MetronomeOptionsPage.h"
+#include "PrompterOptionsPage.h"
 
 PageManager_ &PageManager_::getInstance()
 {
@@ -22,6 +23,7 @@ void PageManager_::init()
     PageArr[PAGE_METRONOME] = new MetronomePage();
     PageArr[PAGE_PROMPTER] = new PrompterPage();
     PageArr[PAGE_METRONOME_OPTIONS] = new MetronomeOptionsPage();
+    PageArr[PAGE_PROMPTER_OPTIONS] = new PrompterOptionsPage();
 
     // initialize all pages
     for (uint8_t i = 0; i < MAX_PAGE; i++)

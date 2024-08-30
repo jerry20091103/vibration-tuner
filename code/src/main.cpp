@@ -1,6 +1,7 @@
 #include "hardware.h"
 #include "pages.h"
 #include "Adafruit_DRV2605.h"
+#include "Prompter.h"
 
 
 void toggleLed() {
@@ -23,6 +24,7 @@ void setup() {
 	// }
 	delay(1000); // delay here to wait for serial monitor to connect
 	Serial.println("Hello, World!");
+
 	hardwareSetup();
 	// load all pages once to set user data
 	PageManager.loadAll();
@@ -32,14 +34,12 @@ void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(PIEZO_PIN, OUTPUT);
 	taskManager.scheduleFixedRate(1000, toggleLed);
-	
 	taskManager.scheduleFixedRate(1, updateButtons);
 	taskManager.scheduleFixedRate(5, updateGui);
 	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
 	// taskManager.scheduleFixedRate(100, []() {
 	// 	Serial.println(analogRead(PIEZO_PIN));
 	// });
-	// play 440 hz with buzzer
 }
 
 void loop() {
