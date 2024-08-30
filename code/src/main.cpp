@@ -1,6 +1,7 @@
 #include "hardware.h"
 #include "pages.h"
 #include "Adafruit_DRV2605.h"
+#include "Prompter.h"
 
 int buzzer_max = 0;
 int buzzer_min = 4095;
@@ -36,6 +37,32 @@ void setup() {
 	// }
 	delay(1000); // delay here to wait for serial monitor to connect
 	Serial.println("Hello, World!");
+
+    // String json = R"({
+    // 			"BPM" : 60,
+    // 			"beatsPerMeasure": 4,
+    // 			"chords": [
+    // 				{"name": "C", "startBeat": 0, "endBeat": 4},
+    // 				{"name": "Am", "startBeat": 4, "endBeat": 8},
+    // 				{"name": "F", "startBeat": 8, "endBeat": 12},
+    // 				{"name": "G", "startBeat": 12, "endBeat": 16},
+    // 				{"name": "Em", "startBeat": 16, "endBeat": 18},
+    // 				{"name": "G", "startBeat": 18, "endBeat": 20},
+    // 				{"name": "C", "startBeat": 20, "endBeat": 22},
+    // 				{"name": "Am", "startBeat": 22, "endBeat": 24}
+    // 			]
+    // 		})";
+
+    // prompter.loadMusicScoreFromJSON(json);
+    // prompter.setCurrentBeat(0);
+    // prompter.setSpeed(0.5);
+    // prompter.start();
+    // Serial.println("-------");
+    // prompter.loadMusicScoreFromJSON(json);
+    // prompter.setCurrentBeat(0);
+    // prompter.setSpeed(0.5);
+    // prompter.start();
+
 	hardwareSetup();
 	// load all pages once to set user data
 	PageManager.loadAll();
@@ -49,7 +76,7 @@ void setup() {
 	taskManager.scheduleFixedRate(5, updateGui);
 	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
 	// taskManager.scheduleFixedRate(1000, testVirbration);
-	taskManager.scheduleFixedRate(500, check_buzzer_max);
+	// taskManager.scheduleFixedRate(500, check_buzzer_max);
 
 	// play 440 hz with buzzer
 	// tone(BUZZER_PIN, 440);
