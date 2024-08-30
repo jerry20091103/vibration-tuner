@@ -36,9 +36,9 @@ void setup() {
 	taskManager.scheduleFixedRate(1, updateButtons);
 	taskManager.scheduleFixedRate(5, updateGui);
 	taskManager.scheduleFixedRate(20, updatePage); // update page every 20ms (50Hz)
-	taskManager.scheduleFixedRate(100, []() {
-		Serial.println(analogRead(PIEZO_PIN));
-	});
+	// taskManager.scheduleFixedRate(100, []() {
+	// 	Serial.println(analogRead(PIEZO_PIN));
+	// });
 	// play 440 hz with buzzer
 }
 
