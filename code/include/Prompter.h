@@ -30,7 +30,9 @@ class Prompter
     bool stop();
     int getCurrentBar();
     void setMusicScore(const MusicScore& score);
+    String readJSONFromSerial();
     void loadMusicScoreFromJSON(const String& json);
+    void loadMusicScoreFromUSBSerial();
     void setSpeed(float speed);
     std::vector<std::string> getCurrent8Chord();
     std::vector<std::string> getNext8Chord();

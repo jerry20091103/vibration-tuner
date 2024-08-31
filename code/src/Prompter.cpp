@@ -121,6 +121,45 @@ void Prompter::setMusicScore(const MusicScore& score)
     Serial.println("setMusicScore end");
 }
 
+String Prompter::readJSONFromSerial()
+{
+    String readBuffer;
+    int braceCount = 0;
+    bool isJsonStarted = false;
+
+    while (Serial.available())
+    {
+        char c = Serial.read();
+
+        if (c == '{')
+        {
+            if (!isJsonStarted)
+                isJsonStarted = true;
+            braceCount++;
+        }
+
+        if (isJsonStarted)
+        {
+            readBuffer += c;
+        }
+
+        if (c == '}' && isJsonStarted)
+        {
+            braceCount--;
+            if (braceCount == 0)
+                break;
+        }
+    }
+
+    Serial.print("serial reading: ");
+    Serial.println(readBuffer);
+
+    if (braceCount == 0 && isJsonStarted)
+        return readBuffer;
+    else
+        return "";
+}
+
 void Prompter::loadMusicScoreFromJSON(const String& json)
 {
     JsonDocument doc;
@@ -148,6 +187,15 @@ void Prompter::loadMusicScoreFromJSON(const String& json)
     }
 
     setMusicScore(score);
+}
+
+void Prompter::loadMusicScoreFromUSBSerial()
+{
+    String musicScoreJSON = readJSONFromSerial();
+    if (musicScoreJSON == "")
+        Serial.println("Error: Read json from serial failed, please check the input.");
+    else
+        loadMusicScoreFromJSON(musicScoreJSON);
 }
 
 void Prompter::setSpeed(float speed)
