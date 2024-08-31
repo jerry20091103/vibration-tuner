@@ -171,6 +171,15 @@ void Prompter::loadMusicScoreFromJSON(const String& json)
         return;
     }
 
+    if (doc["BPM"].isNull() || !doc["BPM"].is<int>() ||
+        doc["beatsPerMeasure"].isNull() || !doc["beatsPerMeasure"].is<int>() ||
+        doc["chords"].isNull() || !doc["chords"].is<JsonArray>() ||
+        doc["chords"].size() == 0)
+    {
+        Serial.println("Error: Music score JSON content is not complete or invalid");
+        return;
+    }
+
     MusicScore score;
 
     score.BPM = doc["BPM"];
