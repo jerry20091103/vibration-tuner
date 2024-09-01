@@ -12,7 +12,7 @@ public:
     int getBPM();
     bool updateBPM(int value);
     void setBPM(int BPM);
-    bool startVibrating();
+    bool startVibrating(int currentBeat = 0);
     bool stopVibrating();
     void setBeatCount(int beatCount);
     int getBeatCount();

@@ -38,8 +38,9 @@ void Metronome::toggleVibrating()
     }
 }
 
-bool Metronome::startVibrating()
+bool Metronome::startVibrating(int currentBeat)
 {
+    currentBeat = currentBeat;
     if (!isVibrating)
     {
         currentBeat = 0;
