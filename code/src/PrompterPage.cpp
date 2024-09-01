@@ -160,6 +160,8 @@ void PrompterPage::load()
     lv_label_set_text_fmt(bpmLabel, "%d", prompter.getBPM());
     String speed = "x" + String(prompter.getSpeed(), 1); // somehow %.1f not working with lv_label_set_text_fmt
     lv_label_set_text(speedLabel, speed.c_str());
+    // set last beat to -1 to force update
+    lastBeat = -1;
 }
 
 void PrompterPage::unload()
