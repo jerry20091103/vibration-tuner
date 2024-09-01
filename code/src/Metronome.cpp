@@ -29,7 +29,7 @@ void Metronome::toggleVibrating()
         this->currentBeat = 0;
         haptic.go();
         analogWrite(BUZZER_PIN, metronome.buzzerLevel);
-        taskManager.scheduleOnce(50, []() {
+        taskManager.scheduleOnce(metronome.STRONG_HAPTIC_DURATION, []() {
             analogWrite(BUZZER_PIN, 0);
             });
         this->currentBeat++;
@@ -50,7 +50,7 @@ bool Metronome::startVibrating()
         this->currentBeat = 0;
         haptic.go();
         analogWrite(BUZZER_PIN, metronome.buzzerLevel);
-        taskManager.scheduleOnce(50, []() {
+        taskManager.scheduleOnce(metronome.STRONG_HAPTIC_DURATION, []() {
             analogWrite(BUZZER_PIN, 0);
             });
         this->currentBeat++;
@@ -142,9 +142,18 @@ void Metronome::vibrationCallback()
     }
     haptic.go();
     analogWrite(BUZZER_PIN, metronome.buzzerLevel);
-    taskManager.scheduleOnce(50, []() {
+    if (!metronome.currentBeat)
+    {
+        taskManager.scheduleOnce(metronome.STRONG_HAPTIC_DURATION, []() {
+            analogWrite(BUZZER_PIN, 0);
+            });
+    }
+    else
+    {
+    taskManager.scheduleOnce(metronome.WEAK_HAPTIC_DURATION, []() {
         analogWrite(BUZZER_PIN, 0);
         });
+    }
     metronome.currentBeat++;
     // Serial.println("Vibrating");
 }
@@ -167,4 +176,9 @@ void Metronome::setStrongHapticWaveform(int waveform)
 void Metronome::setWeakHapticWaveform(int waveform)
 {
     weakHapticWaveform = waveform;
+}
+
+void Metronome::setBuzzerLevel(int level)
+{
+    buzzerLevel = level;
 }
