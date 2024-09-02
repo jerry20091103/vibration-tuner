@@ -53,7 +53,7 @@ void Prompter::togglePrompter()
 
         // start metronome
         metronome.setBPM(currentBPM);
-        metronome.startVibrating();
+        metronome.startVibrating(currentBeat);
     }
 }
 
@@ -76,7 +76,7 @@ bool Prompter::start()
 
         // start metronome
         metronome.setBPM(currentBPM);
-        metronome.startVibrating();
+        metronome.startVibrating(currentBeat);
         return true;
     }
     Serial.println("Error: Prompter already start");
