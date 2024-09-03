@@ -16,13 +16,14 @@ public:
     void unload();
 private:
     static void setHapticMode(int mode, int level, bool isStrong);
+    static void setMetronomeBuzzerLevel(int level);
 
     // user data
     int beatCount = 4;
     int strongHapticMode = 1;
     int weakHapticMode = 2;
     int hapticLevel = 0;
-    int buzzerLevel = 10;
+    int buzzerLevel = 3;
     // lvgl objects
     lv_group_t *listGroup;
     lv_obj_t *listItem[5];
