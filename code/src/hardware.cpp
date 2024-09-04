@@ -6,6 +6,7 @@
 HardwareRotaryEncoder *enc0;
 Button2 btnEnc;
 Adafruit_DRV2605 haptic;
+Preferences preferences;
 
 //* Display settings
 #define TFT_HOR_RES   320

@@ -10,6 +10,7 @@
 #include <lvgl.h>
 #include <lv_conf.h>
 #include <TFT_eSPI.h>
+#include <Preferences.h>
 
 //* Pins
 // encoder pins
@@ -37,6 +38,9 @@ extern Button2 btn0;
 
 // haptic driver object
 extern Adafruit_DRV2605 haptic;
+
+// preferences object (persistent storage)
+extern Preferences preferences;
 
 void hardwareSetup();
 void updateGui();

@@ -45,6 +45,10 @@ void PageManager_::switchPage(PageID pageID, bool useAnim)
             PageArr[curPageID]->unload();
         }
         curPageID = pageID;
+        // store the current page to preferences
+        preferences.begin("page", false);
+        preferences.putInt("pageID", curPageID);
+        preferences.end();
         if (PageArr[curPageID] != nullptr)
         {
             PageArr[curPageID]->load();
@@ -71,7 +75,7 @@ void PageManager_::loadAll()
     }
 }
 
-void PageManager_::loadFistPage(PageID pageID)
+void PageManager_::loadFirstPage(PageID pageID)
 {
     // load the first page
     curPageID = pageID;
@@ -80,6 +84,14 @@ void PageManager_::loadFistPage(PageID pageID)
         PageArr[curPageID]->load();
         lv_screen_load(PageArr[curPageID]->screen);
     }
+}
+
+void PageManager_::loadFirstPageFromPref()
+{
+    preferences.begin("page", false);
+    PageID storedID = (PageID)preferences.getInt("pageID", 0);
+    preferences.end();
+    loadFirstPage(storedID);
 }
 
 PageManager_ &PageManager = PageManager.getInstance();

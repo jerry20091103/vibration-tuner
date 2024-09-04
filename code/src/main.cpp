@@ -29,7 +29,7 @@ void setup() {
 	// load all pages once to set user data
 	PageManager.loadAll();
 	// load the first page
-	PageManager.loadFistPage(PAGE_TUNER);
+	PageManager.loadFirstPageFromPref();
 	// blink led
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(PIEZO_PIN, OUTPUT);
