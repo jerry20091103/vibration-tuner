@@ -53,7 +53,9 @@ void Prompter::togglePrompter()
 
         // start metronome
         metronome.setBPM(currentBPM);
-        metronome.startVibrating(currentBeat);
+        metronome.startVibrating(currentBeat % musicScore.beatsPerMeasure);
+        Serial.print("metronome startVibrating at beat: ");
+        Serial.println(currentBeat % musicScore.beatsPerMeasure);
     }
 }
 
@@ -76,7 +78,9 @@ bool Prompter::start()
 
         // start metronome
         metronome.setBPM(currentBPM);
-        metronome.startVibrating(currentBeat);
+        metronome.startVibrating(currentBeat % musicScore.beatsPerMeasure);
+        Serial.print("metronome startVibrating at beat: ");
+        Serial.println(currentBeat % musicScore.beatsPerMeasure);
         return true;
     }
     Serial.println("Error: Prompter already start");
