@@ -12,7 +12,7 @@ public:
     int getBPM();
     bool updateBPM(int value);
     void setBPM(int BPM);
-    bool startVibrating();
+    bool startVibrating(int currentBeat = 0);
     bool stopVibrating();
     void setBeatCount(int beatCount);
     int getBeatCount();
@@ -23,6 +23,8 @@ public:
 private:
     const int MAX_BPM = 600;
     const int MIN_BPM = 1;
+    const int STRONG_HAPTIC_DURATION = 100;
+    const int WEAK_HAPTIC_DURATION = 30;
     int BPM;
     bool isVibrating;
     uint8_t vibrationTaskID;
