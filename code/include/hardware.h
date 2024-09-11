@@ -13,8 +13,8 @@
 
 //* Pins
 // encoder pins
-#define ENC_A D7 //data pin
-#define ENC_B D6 //clock pin
+#define ENC_A D6
+#define ENC_B D7
 #define ENC_BTN D3
 
 // haptic driver pins

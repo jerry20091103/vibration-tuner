@@ -10,6 +10,7 @@ Metronome::Metronome()
     vibrationTaskID = -1;
     beatCount = 4;
     currentBeat = 0;
+    buzzerLevel = 100;
 }
 
 void Metronome::toggleVibrating()
@@ -27,6 +28,10 @@ void Metronome::toggleVibrating()
         haptic.setWaveform(0, strongHapticWaveform);
         this->currentBeat = 0;
         haptic.go();
+        analogWrite(BUZZER_PIN, metronome.buzzerLevel);
+        taskManager.scheduleOnce(50, []() {
+            analogWrite(BUZZER_PIN, 0);
+            });
         this->currentBeat++;
         // Serial.println("Vibrating");
         vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
@@ -44,6 +49,10 @@ bool Metronome::startVibrating()
         haptic.setWaveform(0, strongHapticWaveform);
         this->currentBeat = 0;
         haptic.go();
+        analogWrite(BUZZER_PIN, metronome.buzzerLevel);
+        taskManager.scheduleOnce(50, []() {
+            analogWrite(BUZZER_PIN, 0);
+            });
         this->currentBeat++;
         // Serial.println("Vibrating");
         vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
@@ -132,6 +141,10 @@ void Metronome::vibrationCallback()
         haptic.setWaveform(0, metronome.weakHapticWaveform);
     }
     haptic.go();
+    analogWrite(BUZZER_PIN, metronome.buzzerLevel);
+    taskManager.scheduleOnce(50, []() {
+        analogWrite(BUZZER_PIN, 0);
+        });
     metronome.currentBeat++;
     // Serial.println("Vibrating");
 }
@@ -143,7 +156,7 @@ int Metronome::getBeatCount()
 
 int Metronome::getCurrentBeat()
 {
-    return currentBeat;
+    return max(0, currentBeat - 1);
 }
 
 void Metronome::setStrongHapticWaveform(int waveform)

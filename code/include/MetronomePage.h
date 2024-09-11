@@ -19,12 +19,13 @@ public:
     void load();
     void unload();
 private:
-    // data
+    // user data
     int currentBPM = 60;
-    int beatCount = 4;
     // lvgl object ref
-    lv_obj_t *labelBPM;
-    lv_obj_t *labelBeat;
+    lv_obj_t *beatLED[16];
+    lv_obj_t *bpmArc;
+    // variables
+    int lastBeatCount = -1;
 };
 
 #endif // METRONOME_PAGE_H
