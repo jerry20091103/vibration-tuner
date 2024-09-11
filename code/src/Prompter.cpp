@@ -120,6 +120,7 @@ void Prompter::setMusicScore(const MusicScore& score)
 {
     musicScore = score;
     metronome.setBPM(score.BPM);
+    metronome.setBeatCount(score.beatsPerMeasure);
     currentBPM = musicScore.BPM;
     isScoreLoaded = true;
     Serial.println("setMusicScore end");
