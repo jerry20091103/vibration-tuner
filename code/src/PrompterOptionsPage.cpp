@@ -16,8 +16,8 @@ void PrompterOptionsPage::onBtnPressed(uint8_t pin)
         lv_obj_t *text = lv_msgbox_add_text(msgBox, "Please connect via USB and send the music score with the editor program.");
         lv_obj_set_style_text_font(text, &lv_font_montserrat_20, 0);
         // load music score from USB
+        taskManager.yieldForMicros(3000000); // wait for USB serial data
         prompter.loadMusicScoreFromUSBSerial();
-        taskManager.yieldForMicros(3000000); // todo: replace this with a function that waits USB serial data
         lv_msgbox_close(msgBox);
     }
     else
