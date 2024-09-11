@@ -1,4 +1,10 @@
-#include "butterworth.h"
+#include <vector>
+#include <complex>
+#include <cmath>
+#include <butterworth.h>
+#define PI 3.14159265358979323846
+using namespace std;
+
 
 vector<double> ComputeDenCoeffs(int FilterOrder, double Lcutoff, double Ucutoff)
 {
@@ -167,93 +173,3 @@ vector<double> ComputeHP(int FilterOrder)
 
     return NumCoeffs;
 }
-
-//vector<double> filter(int ord, vector<double> a, vector<double> b, vector<double> x)
-//{
-//	int np = x.size();
-//	vector<double> y(np);
-//
-//	int i, j;
-//	y[0] = b[0] * x[0];
-//	for (i = 1; i<ord + 1; i++)
-//	{
-//		y[i] = 0.0;
-//		for (j = 0; j<i + 1; j++)
-//			y[i] = y[i] + b[j] * x[i - j];
-//		for (j = 0; j<i; j++)
-//			y[i] = y[i] - a[j + 1] * y[i - j - 1];
-//	}
-//	for (i = ord + 1; i<np + 1; i++)
-//	{
-//		y[i] = 0.0;
-//		for (j = 0; j<ord + 1; j++)
-//			y[i] = y[i] + b[j] * x[i - j];
-//		for (j = 0; j<ord; j++)
-//			y[i] = y[i] - a[j + 1] * y[i - j - 1];
-//	}
-//
-//	return y;
-//}
-
-vector<double> filter(vector<double>x, vector<double> coeff_b, vector<double> coeff_a)
-{
-    int len_x = x.size();
-    int len_b = coeff_b.size();
-    int len_a = coeff_a.size();
-
-    vector<double> zi(len_b);
-
-    vector<double> filter_x(len_x);
-
-    if (len_a == 1)
-    {
-        for (int m = 0; m < len_x; m++)
-        {
-            filter_x[m] = coeff_b[0] * x[m] + zi[0];
-            for (int i = 1; i < len_b; i++)
-            {
-                zi[i - 1] = coeff_b[i] * x[m] + zi[i];//-coeff_a[i]*filter_x[m];
-            }
-        }
-    }
-    else
-    {
-        for (int m = 0; m < len_x; m++)
-        {
-            filter_x[m] = coeff_b[0] * x[m] + zi[0];
-            for (int i = 1; i < len_b; i++)
-            {
-                zi[i - 1] = coeff_b[i] * x[m] + zi[i] - coeff_a[i] * filter_x[m];
-            }
-        }
-    }
-
-    return filter_x;
-}
-
-//vector<double> bandpass(vector<double> input, double lowpass, double highpass, double fps)
-//{
-//	double N = input.size();
-//	cv::Mat x = cv::Mat::zeros(1, input.size(), CV_64FC1);
-//
-//	for (int i = 0; i < input.size(); i++)
-//	{
-//		x.at<double>(0, i) = input[i];
-//	}
-//
-//	Mat x_fre;
-//	dft(x, x_fre, DFT_COMPLEX_OUTPUT);
-//
-//	Mat W = Mat::zeros(1, input.size(), CV_64FC1);
-//
-//	for (int i = 0; i < input.size(); i++)
-//	{
-//		if ((double)i / N *)
-//	}
-//}
-
-
-
-
-
-
