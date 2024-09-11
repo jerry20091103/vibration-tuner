@@ -2,7 +2,6 @@
 #define TUNER_H
 #include <vector>
 
-using namespace std;
 
 class Tuner
 {
@@ -14,12 +13,12 @@ private:
     const float sampleRate = 16000;
     float referenceFrequency;
     float expectedFrequencies[6];
-    vector<vector<double> > numCoeffs;
-    vector<vector<double> > denCoeffs;
-    float calculatePitch(vector<float> data2pitch);
-    vector<float> difference_function(vector<float> data2pitch, int windowSize);
-    vector<float> cumulative_mean_normalized_difference_function(vector<float> diff);
-    float get_pitch(vector<float> cmndf, float threshold);
+    std::vector<std::vector<double> > numCoeffs;
+    std::vector<std::vector<double> > denCoeffs;
+    float calculatePitch(std::vector<float>& data2pitch);
+    float get_pitch(std::vector<float>& cmndf, float threshold);
+    std::vector<float> difference_function(std::vector<float>& data2pitch, int windowSize);
+    std::vector<float> cumulative_mean_normalized_difference_function(std::vector<float>& diff);
 public:
     Tuner();
     void start();
@@ -31,6 +30,6 @@ public:
     void reconstructFilter();
     void loadExpectedFrequencies();
     void calculateExpectedFrequencies(float frequency);
-    float testing(vector<float> data);
+    float testing(std::vector<double> data);
 }; 
 #endif

@@ -7,16 +7,15 @@
 #include<fstream>
 #include<math.h>
 
-using namespace std;
 
-vector<double> ComputeDenCoeffs(int FilterOrder, double Lcutoff, double Ucutoff);
+std::vector<double> ComputeDenCoeffs(int FilterOrder, double Lcutoff, double Ucutoff);
 
-vector<double> TrinomialMultiply(int FilterOrder, vector<double> b, vector<double> c);
+std::vector<double> TrinomialMultiply(int FilterOrder, std::vector<double> b, std::vector<double> c);
 
-vector<double> ComputeNumCoeffs(int FilterOrder, double Lcutoff, double Ucutoff, vector<double> DenC);
+std::vector<double> ComputeNumCoeffs(int FilterOrder, double Lcutoff, double Ucutoff, std::vector<double> DenC);
 
-vector<double> ComputeLP(int FilterOrder);
+std::vector<double> ComputeLP(int FilterOrder);
 
-vector<double> ComputeHP(int FilterOrder);
+std::vector<double> ComputeHP(int FilterOrder);
 
 #endif
