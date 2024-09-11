@@ -45,9 +45,14 @@ void Prompter::togglePrompter()
     }
     else
     {
+        // return to start if reach end
+        if (currentBeat >= musicScore.chords.back().endBeat)
+        {
+            currentBeat = 0;
+        }
         isRunning = true;
         int period = 60000000 / currentBPM;
-        Serial.println("Prompter started.");
+        // Serial.println("Prompter started.");
         prompterTaskID = taskManager.scheduleFixedRate(
             period, chordUpdateCallback, TIME_MICROS);
 
@@ -69,6 +74,11 @@ bool Prompter::start()
     }
     if (!isRunning)
     {
+        // return to start if reach end
+        if (currentBeat >= musicScore.chords.back().endBeat)
+        {
+            currentBeat = 0;
+        }
         isRunning = true;
         int period = 60000000 / currentBPM;
         Serial.println("Prompter started.");
@@ -229,7 +239,7 @@ std::vector<std::string> Prompter::getCurrent8Chord()
         output += getChordAtBeat(currentBeat + i);
         output += " | ";
     }
-    Serial.println(output.c_str());
+    // Serial.println(output.c_str());
     return nextChords;
 }
 
@@ -243,7 +253,7 @@ std::vector<std::string> Prompter::getNext8Chord()
         output += getChordAtBeat(currentBeat + i);
         output += " | ";
     }
-    Serial.println(output.c_str());
+    // Serial.println(output.c_str());
     return nextChords;
 }
 
@@ -254,15 +264,15 @@ void Prompter::chordUpdateCallback()
 
 void Prompter::updateCurrentBeat()
 {
-    Serial.print("Current Bar: ");
-    Serial.print(getCurrentBar());
-    Serial.print(", Current Beat: ");
-    Serial.println(currentBeat);
+    // Serial.print("Current Bar: ");
+    // Serial.print(getCurrentBar());
+    // Serial.print(", Current Beat: ");
+    // Serial.println(currentBeat);
 
-    Serial.print("Current Chord: ");
-    Serial.println(getChordAtBeat(currentBeat).c_str());
+    // Serial.print("Current Chord: ");
+    // Serial.println(getChordAtBeat(currentBeat).c_str());
 
-    Serial.print("Current 8 Chord: ");
+    // Serial.print("Current 8 Chord: ");
     getCurrent8Chord();
 
     currentBeat++;
