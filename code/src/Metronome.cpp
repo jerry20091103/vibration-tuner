@@ -17,44 +17,39 @@ void Metronome::toggleVibrating()
 {
     if (isVibrating)
     {
-        isVibrating = false;
-        taskManager.cancelTask(vibrationTaskID);
+        stopVibrating();
     }
     else
     {
-        currentBeat = 0;
-        isVibrating = true;
-        int period = 60000000 / BPM;
-        haptic.setWaveform(0, strongHapticWaveform);
-        this->currentBeat = 0;
-        haptic.go();
-        analogWrite(BUZZER_PIN, metronome.buzzerLevel);
-        taskManager.scheduleOnce(50, []() {
-            analogWrite(BUZZER_PIN, 0);
-            });
-        this->currentBeat++;
-        // Serial.println("Vibrating");
-        vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
+        startVibrating();
     }
 }
 
-bool Metronome::startVibrating()
+bool Metronome::startVibrating(int currentBeat)
 {
+    this->currentBeat = currentBeat;
     if (!isVibrating)
     {
-        currentBeat = 0;
-        Serial.println("Start Vibrating");
         isVibrating = true;
         int period = 60000000 / BPM;
-        haptic.setWaveform(0, strongHapticWaveform);
-        this->currentBeat = 0;
-        haptic.go();
-        analogWrite(BUZZER_PIN, metronome.buzzerLevel);
-        taskManager.scheduleOnce(50, []() {
+        if (currentBeat == 0)
+        {
+            haptic.setWaveform(0, strongHapticWaveform);
+            taskManager.scheduleOnce(metronome.STRONG_HAPTIC_DURATION, []() {
             analogWrite(BUZZER_PIN, 0);
             });
+        }
+        else
+        {
+            haptic.setWaveform(0, weakHapticWaveform);
+            taskManager.scheduleOnce(metronome.WEAK_HAPTIC_DURATION, []() {
+            analogWrite(BUZZER_PIN, 0);
+            });
+        }
+        haptic.go();
+        analogWrite(BUZZER_PIN, metronome.buzzerLevel);
+        
         this->currentBeat++;
-        // Serial.println("Vibrating");
         vibrationTaskID = taskManager.scheduleFixedRate(period, vibrationCallback, TIME_MICROS);
         return true;
     }
@@ -66,7 +61,6 @@ bool Metronome::stopVibrating()
 {
     if (isVibrating)
     {
-        Serial.println("Stop Vibrating");
         isVibrating = false;
         taskManager.cancelTask(vibrationTaskID);
         return true;
@@ -142,9 +136,18 @@ void Metronome::vibrationCallback()
     }
     haptic.go();
     analogWrite(BUZZER_PIN, metronome.buzzerLevel);
-    taskManager.scheduleOnce(50, []() {
+    if (!metronome.currentBeat)
+    {
+        taskManager.scheduleOnce(metronome.STRONG_HAPTIC_DURATION, []() {
+            analogWrite(BUZZER_PIN, 0);
+            });
+    }
+    else
+    {
+    taskManager.scheduleOnce(metronome.WEAK_HAPTIC_DURATION, []() {
         analogWrite(BUZZER_PIN, 0);
         });
+    }
     metronome.currentBeat++;
     // Serial.println("Vibrating");
 }
@@ -167,4 +170,9 @@ void Metronome::setStrongHapticWaveform(int waveform)
 void Metronome::setWeakHapticWaveform(int waveform)
 {
     weakHapticWaveform = waveform;
+}
+
+void Metronome::setBuzzerLevel(int level)
+{
+    buzzerLevel = level;
 }

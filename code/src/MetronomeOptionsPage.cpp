@@ -67,9 +67,9 @@ void MetronomeOptionsPage::onEncTurned(int value)
         else if (lv_group_get_focused(listGroup) == listItem[3])
         {
             buzzerLevel += value;
-            buzzerLevel = constrain(buzzerLevel, 0, 10);
+            buzzerLevel = constrain(buzzerLevel, 0, 3);
             lv_label_set_text(getOptionListItemValueLabel(listItem[3]), createAdjustingText(String(buzzerLevel)));
-            // metronome.setBuzzerLevel(buzzerLevel);
+            setMetronomeBuzzerLevel(buzzerLevel);
         }
         else if (lv_group_get_focused(listGroup) == listItem[4])
         {
@@ -121,7 +121,7 @@ void MetronomeOptionsPage::init()
     listItem[0] = createOptionListItem(list, LV_SYMBOL_AUDIO, "Beats per measure", String(beatCount).c_str(), LV_PALETTE_LIGHT_BLUE);
     listItem[1] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Primary haptic waveform", hapticModeStr[strongHapticMode], LV_PALETTE_LIGHT_BLUE);
     listItem[2] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Secondary haptic waveform", hapticModeStr[weakHapticMode], LV_PALETTE_LIGHT_BLUE);
-    listItem[3] = createOptionListItem(list, LV_SYMBOL_VOLUME_MAX, "Buzzer volume", "10", LV_PALETTE_LIGHT_BLUE);
+    listItem[3] = createOptionListItem(list, LV_SYMBOL_VOLUME_MAX, "Buzzer volume", String(buzzerLevel).c_str(), LV_PALETTE_LIGHT_BLUE);
     listItem[4] = createOptionListItem(list, LV_SYMBOL_SETTINGS, "Haptic intensity", "Strong", LV_PALETTE_LIGHT_BLUE);
 
     for (int i = 0; i < 5; i++)
@@ -138,7 +138,7 @@ void MetronomeOptionsPage::load()
     metronome.setBeatCount(beatCount);
     setHapticMode(strongHapticMode, hapticLevel, true);
     setHapticMode(weakHapticMode, hapticLevel, false);
-    // metronome.setBuzzerLevel(buzzerLevel);
+    setMetronomeBuzzerLevel(buzzerLevel);
 }
 
 void MetronomeOptionsPage::unload()
@@ -170,5 +170,24 @@ void MetronomeOptionsPage::setHapticMode(int mode, int level, bool isStrong)
     else
     {
         metronome.setWeakHapticWaveform(waveform + level);
+    }
+}
+
+void MetronomeOptionsPage::setMetronomeBuzzerLevel(int level)
+{
+    switch (level)
+    {
+    case 0:
+        metronome.setBuzzerLevel(0);
+        break;
+    case 1:
+        metronome.setBuzzerLevel(70);
+        break;
+    case 2:
+        metronome.setBuzzerLevel(190);
+        break;
+    case 3:
+        metronome.setBuzzerLevel(255);
+        break;
     }
 }
