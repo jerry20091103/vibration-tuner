@@ -118,8 +118,7 @@ class ChordEntryApp:
         measure_frame.pack(pady=10, fill=tk.X, expand=True)
 
         # 小節編號標籤
-        measure_label = ttk.Label(measure_frame, text=f"Measure {
-                                  len(self.measures) + 1}")
+        measure_label = ttk.Label(measure_frame, text=f"Measure {len(self.measures) + 1}")
         measure_label.pack(side=tk.LEFT)
 
         measure_entries = []
@@ -322,8 +321,7 @@ class ChordEntryApp:
                     with serial.Serial(port, baud_rate, timeout=1) as ser:
                         ser.write(json_data.encode('utf-8'))
                         ser.flush()
-                    messagebox.showinfo("Success", f"Data sent to {
-                                        port} successfully!")
+                    messagebox.showinfo("Success", f"Data sent to {port} successfully!")
                     port_window.destroy()
                 except Exception as e:
                     messagebox.showerror("Error", f"Failed to send data: {e}")
