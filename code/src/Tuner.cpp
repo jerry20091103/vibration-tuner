@@ -8,7 +8,9 @@
 #include <float.h>
 
 using namespace std;
-// Tuner tuner;
+Tuner tuner;
+
+#define WINDOW_SIZE 256
 
 // void Tuner::loadExpectedFrequencies() {
 //     expectedFrequencies[5] = 329.63; // -5
@@ -19,6 +21,29 @@ using namespace std;
 //     expectedFrequencies[0] = 82.41; // -29
 // }
 
+// volatile variable for ISR
+volatile bool adc_coversion_done = false;
+volatile int adcValArr[WINDOW_SIZE] = {0};
+volatile int adcValIndex = 0;
+
+// avg pitch for 6 strings
+float avgPitch[6] = {0};
+int stringCounter = 0;
+
+void ARDUINO_ISR_ATTR adcComplete() {
+	adc_continuous_data_t *result = NULL;
+  	if (analogContinuousRead(&result, 0))
+	{
+		adcValArr[adcValIndex] = result[0].avg_read_raw;
+		adcValIndex = adcValIndex + 1;
+		if (adcValIndex >= WINDOW_SIZE)
+		{
+			adcValIndex = 0;
+			adc_coversion_done = true;
+		}
+	}
+}
+
 void Tuner::calculateExpectedFrequencies(float frequency) {
     expectedFrequencies[5] = frequency * pow(2, (-5 / 12.0));
     expectedFrequencies[4] = frequency * pow(2, (-10 / 12.0));
@@ -26,6 +51,26 @@ void Tuner::calculateExpectedFrequencies(float frequency) {
     expectedFrequencies[2] = frequency * pow(2, (-19 / 12.0));
     expectedFrequencies[1] = frequency * pow(2, (-24 / 12.0));
     expectedFrequencies[0] = frequency * pow(2, (-29 / 12.0));
+}
+
+void Tuner::calculate6StringsPitch()
+{
+    if (adc_coversion_done)
+	{
+		adc_coversion_done = false;
+		// calculate pitch
+		uint64_t start = esp_timer_get_time();
+        float pitch = 0;	
+        pitch = tuner.testing(std::vector<double>(adcValArr, adcValArr + WINDOW_SIZE), stringCounter);
+		uint64_t end = esp_timer_get_time();
+		// running average for 30 samples
+		avgPitch[stringCounter] = (avgPitch[stringCounter] * 29 + pitch) / 30;
+	}
+}
+
+void Tuner::setStringToCalculate(int stringId)
+{
+    stringCounter = stringId;
 }
 
 Tuner::Tuner()
@@ -39,10 +84,10 @@ Tuner::Tuner()
     }
     calculateExpectedFrequencies(referenceFrequency);
     reconstructFilter();
-    uint8_t adc_pins[] = {PIEZO_PIN};
-    uint8_t adc_pins_count = sizeof(adc_pins) / sizeof(uint8_t);
-    // // adc_continuos_data_t* result = NULL;
-    // // analogSetAttenuation(ADC_0db);
+    // setup adc
+    analogContinuousSetWidth(12);
+    analogContinuousSetAtten(ADC_0db);
+    analogContinuous(adc_pins, adc_pins_count, 1, sampleRate, &adcComplete);
     // analogRead(PIEZO_PIN);
 }
 
@@ -77,11 +122,28 @@ void Tuner::reconstructFilter() {
 }
 
 void Tuner::start() {
-    vector<double> rawData(hopSize);
-    vector<double> filteredData(hopSize);
-    filteredData = realtime_filter(rawData, numCoeffs[0], denCoeffs[0]);
-    vector<float> data2pitch(windowSize);
-    float pitch =calculatePitch(data2pitch);
+    analogContinuousStart();
+}
+
+void Tuner::stop() {
+    analogContinuousStop();
+    adc_coversion_done = false;
+}
+
+std::vector<float> Tuner::getFrequncy() {
+    std::vector<float> freqs(6);
+    for (int i = 0; i < 6; i++) {
+        freqs[i] = avgPitch[i];
+    }
+    return freqs;
+}
+
+std::vector<float> Tuner::getExpectedFrequencies() {
+    std::vector<float> freqs(6);
+    for (int i = 0; i < 6; i++) {
+        freqs[i] = expectedFrequencies[i];
+    }
+    return freqs;
 }
 
 float Tuner::calculatePitch(vector<float>& data2pitch) {
@@ -139,7 +201,7 @@ vector<float> Tuner::cumulative_mean_normalized_difference_function(vector<float
     return cmndf;
 }
 
-float Tuner::testing(vector<double> data) {
+float Tuner::testing(vector<double> data, int stringId) {
     vector<double> filteredData(data.size()); // 84us
     // Serial.println("numCoeefs:");
     // for (auto &i: numCoeffs[0]) {
@@ -149,7 +211,15 @@ float Tuner::testing(vector<double> data) {
     // for (auto &i: denCoeffs[0]) {
     //     Serial.println(i);
     // }
-    filteredData = realtime_filter(data, numCoeffs[0], denCoeffs[0]); // 2649us
+
+    // run filter for all 6 strings
+    // for (int i = 0; i < 1; i++) {
+    //     if (stringId != i)
+    //         realtime_filter(data, numCoeffs[i], denCoeffs[i], i);
+    //     else // only get filtered data for the current string
+    //         filteredData = realtime_filter(data, numCoeffs[i], denCoeffs[i], i);
+    // }
+    filteredData = realtime_filter(data, numCoeffs[stringId], denCoeffs[stringId], stringId);
     // for (auto &i: filteredData) {
     //     Serial.println(i);
     // }
