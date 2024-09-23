@@ -1,6 +1,7 @@
 #include "TunerPage.h"
 #include "hardware.h"
 #include "guiUtility.h"
+#include "Tuner.h"
 
 LV_IMG_DECLARE(tuner_icon);
 
@@ -28,23 +29,47 @@ void TunerPage::onBtnDoubleClicked(uint8_t pin)
 
 void TunerPage::onEncTurned(int value)
 {
-    // change reference frequency
-    a4Freq += value;
-    a4Freq = constrain(a4Freq, 400, 480);
-    // tuner.setReferenceFrequency(a4Freq);
-    lv_label_set_text_fmt(getArcValueLabel(refFreqArc), "%d", a4Freq);
-    lv_arc_set_value(refFreqArc, a4Freq);
+    // change string to tune
+    stringId += value;
+    stringId = constrain(stringId, 0, 5);
+    lv_label_set_text_fmt(getArcValueLabel(stringArc), "%d", stringId + 1);
+    lv_arc_set_value(stringArc, stringId);
+    tuner.setStringToCalculate(stringId);
+    // set note name
+    switch (stringId)
+    {
+    case 0:
+        lv_label_set_text(noteLabel, "E2");
+        break;
+    case 1:
+        lv_label_set_text(noteLabel, "A2");
+        break;
+    case 2:
+        lv_label_set_text(noteLabel, "D3");
+        break;
+    case 3:
+        lv_label_set_text(noteLabel, "G3");
+        break;
+    case 4:
+        lv_label_set_text(noteLabel, "B3");
+        break;
+    case 5:
+        lv_label_set_text(noteLabel, "E4");
+        break;
+    default:
+        break;
+    }
 }
 
 void TunerPage::update()
 {
     // test cent display
-    testCent += 1;
-    if (testCent > 50)
-    {
-        testCent = -50;
-    }
-    updateTunerCent(testCent);
+    std::vector<float> freq = tuner.getFrequncy();
+    std::vector<float> expectedFreq = tuner.getExpectedFrequencies();
+    // 0 string cent
+    int cent = 1200 * log2(freq[stringId] / expectedFreq[stringId]);
+
+    updateTunerCent(cent);
 }
 
 void TunerPage::init()
@@ -77,20 +102,16 @@ void TunerPage::init()
     lv_label_set_text(noteLabel, "A4");
     lv_obj_set_style_text_font(noteLabel, &lv_font_montserrat_48, 0);
     lv_obj_align(noteLabel, LV_ALIGN_TOP_MID, 0, 120);
-    // reference frequency arc
-    refFreqArc = createArc(screen, LV_PALETTE_LIGHT_GREEN, "Hz", 100, 10);
-    lv_obj_align(refFreqArc, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
-    lv_obj_t *valueLabel = getArcValueLabel(refFreqArc);
+    // string arc
+    stringArc = createArc(screen, LV_PALETTE_LIGHT_GREEN, "No.", 100, 10);
+    lv_obj_align(stringArc, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+    lv_obj_t *valueLabel = getArcValueLabel(stringArc);
     lv_obj_set_style_text_font(valueLabel, &lv_font_montserrat_24, 0);
-    lv_label_set_text_fmt(valueLabel, "%d", a4Freq);
-    lv_arc_set_range(refFreqArc, 400, 480);
-    lv_arc_set_value(refFreqArc, a4Freq);
-    lv_obj_t *unitLabel = getArcUnitLabel(refFreqArc);
+    lv_label_set_text_fmt(valueLabel, "%d", stringId + 1);
+    lv_arc_set_range(stringArc, 0, 5);
+    lv_arc_set_value(stringArc, stringId);
+    lv_obj_t *unitLabel = getArcUnitLabel(stringArc);
     lv_obj_set_style_text_font(unitLabel, &lv_font_montserrat_20, 0);
-    // show current frequency and cent
-    freqLabel = lv_label_create(screen);
-    lv_label_set_text(freqLabel, "440 Hz");
-    lv_obj_align(freqLabel, LV_ALIGN_BOTTOM_MID, 0, -30);
     centLabel = lv_label_create(screen);
     lv_label_set_text(centLabel, "+0 cent");
     lv_obj_align(centLabel, LV_ALIGN_BOTTOM_MID, 0, -10);
@@ -105,10 +126,13 @@ void TunerPage::load()
     enc0->changePrecision(0, 0);
     // set tuner user data
     // tuner.setReferenceFrequency(a4Freq);
+    tuner.setStringToCalculate(stringId);
+    tuner.start();
 }
 
 void TunerPage::unload()
 {
+    tuner.stop();
 }
 
 void TunerPage::updateTunerCent(int cent)

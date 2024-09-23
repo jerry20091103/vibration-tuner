@@ -19,12 +19,13 @@ private:
     void setTunerLED(bool leftOn, bool midOn, bool rightOn);
     // user data
     int a4Freq = 440;
+    int stringId = 0;
     // lvgl object ref
     lv_obj_t *tuneLED[3];
-    lv_obj_t *refFreqArc;
+    lv_obj_t *stringArc;
     lv_obj_t *indicatorBar;
     lv_obj_t *noteLabel;
-    lv_obj_t *freqLabel;
+    lv_obj_t *stringLabel;
     lv_obj_t *centLabel;
     // variables
     int testCent = 0;
